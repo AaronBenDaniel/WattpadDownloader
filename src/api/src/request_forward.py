@@ -1,3 +1,4 @@
+#All of this was written with chatgpt 3.5 as a proof-of-concept
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.request import urlopen, Request
 from urllib.parse import urlparse
