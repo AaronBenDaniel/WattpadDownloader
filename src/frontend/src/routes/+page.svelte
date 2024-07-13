@@ -1,5 +1,5 @@
 <script>
-  import { browser } from '$app/environment';
+  import { browser } from "$app/environment";
   let story_id = "";
   let download_images = false;
   let is_paid_story = false;
@@ -12,6 +12,10 @@
 
   let raw_story_id = "";
   let is_part_id = false;
+  let author = "";
+  let name_data = "";
+  let name = "";
+  let author_data = "";
 
   let button_disabled = false;
   $: button_disabled =
@@ -52,14 +56,42 @@
   }
 
   $: {
-    if (browser){
-    fetch(
-      "http://"+window.location.href.split("//")[1].split(":")[0]+":5043/https://www.wattpad.com/api/v3/story_parts/939051741?fields=url",
-    )
-      .then((response) => response.text()) // convert the response to text
-      .then((result) => console.log(result)) // log the result
-      .catch((error) => console.log(error)); // Handle any errors
-  }}
+    if (browser) {
+      fetch(
+        "http://" +
+          window.location.href.split("//")[1].split(":")[0] +
+          ":5043/https://www.wattpad.com/api/v3/stories/" +
+          story_id +
+          "?fields=title",
+      )
+        .then((response) => response.text()) // convert the response to text
+        .then((result) => (name_data = result.split(':"')[1].split('"')[0])) // log the result
+        .catch((error) => console.log(error)); // Handle any errors
+      if (!name_data.includes("www.wattpad.com")) {
+        name = name_data;
+      }
+    }
+  }
+
+  $: {
+    if (browser) {
+      fetch(
+        "http://" +
+          window.location.href.split("//")[1].split(":")[0] +
+          ":5043/https://www.wattpad.com/api/v3/stories/" +
+          story_id +
+          "?fields=user(username)",
+      )
+        .then((response) => response.text()) // convert the response to text
+        .then((result) => (author_data = result.split(':"')[1].split('"')[0])) // log the result
+        .catch((error) => console.log(error)); // Handle any errors
+      if (!author_data.includes("www.wattpad.com")) {
+        author = author_data;
+      }
+    }
+  }
+
+
 </script>
 
 <div>
@@ -96,6 +128,8 @@
                 required
                 name="story_id"
               />
+              <h1 style="front-size:18px;">Name: </h1><h1 style="font-size:18px;color:#FF6122;">{name}</h1>
+              <h1 style="front-size:18px;">Author: </h1><h1 style="font-size:18px;color:#FF6122;">{author}</h1>
               <label class="label" for="story_id">
                 {#if is_part_id}
                   <p class=" text-red-500">
