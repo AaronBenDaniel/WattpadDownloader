@@ -19,6 +19,7 @@ COPY --from=0 /build/build /app/build
 COPY src/api/src .
 
 EXPOSE 80
+EXPOSE 5043
 # ENV PORT=80
 
 CMD [ "python3", "main.py"]

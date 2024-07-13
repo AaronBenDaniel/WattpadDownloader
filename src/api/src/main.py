@@ -14,6 +14,7 @@ from create_book import (
 import tempfile
 from io import BytesIO
 from fastapi.staticfiles import StaticFiles
+from subprocess import Popen
 
 app = FastAPI()
 BUILD_PATH = Path(__file__).parent / "build"
@@ -96,4 +97,5 @@ app.mount("/", StaticFiles(directory=BUILD_PATH), "static")
 if __name__ == "__main__":
     import uvicorn
 
+    p = Popen(['python3','/app/request_forward.py'])
     uvicorn.run(app, host="0.0.0.0", port=80)

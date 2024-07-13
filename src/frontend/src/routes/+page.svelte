@@ -49,6 +49,15 @@
       raw_story_id = story_id;
     }
   }
+
+  $: {
+    fetch(
+      "http://192.168.4.42:5043/https://www.wattpad.com/api/v3/story_parts/939051741?fields=url",
+    )
+      .then((response) => response.text()) // convert the response to text
+      .then((result) => console.log(result)) // log the result
+      .catch((error) => console.log(error)); // Handle any errors
+  }
 </script>
 
 <div>
