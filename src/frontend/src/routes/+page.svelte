@@ -1,6 +1,5 @@
 <script>
   import { browser } from "$app/environment";
-  import { onMount } from "svelte";
   let story_id = "";
   let download_images = false;
   let is_paid_story = false;
