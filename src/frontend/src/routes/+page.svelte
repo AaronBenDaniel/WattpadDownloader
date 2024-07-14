@@ -62,22 +62,14 @@
       let response = await fetch(
         window.location.href.split("?")[0] + "get_info/" + story_id,
       );
-      let name_wait;
       try {
         let json = await response.json();
-        name_wait = json.title;
-      } catch (err) {
-        name_wait = "Unknown Story";
-      }
-
-      response = await fetch(window.location.href.split("?")[0] + "get_info/" + story_id);
-      try {
-        let json = await response.json();
+        name = json.title;
         author = json.user.username;
       } catch (err) {
+        name = "Unknown Story";
         author = "Unknown Author";
       }
-      name = name_wait;
     }
   }
 </script>
