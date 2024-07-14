@@ -25,7 +25,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             
             # Send CORS headers
             self.send_response(200)
-            self.send_header('Content-type', 'text/html')
+            self.send_header('.Content-type', 'text/html')
             self.send_header('Access-Control-Allow-Origin', '*')  # Allow requests from any origin
             self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
             self.send_header('Access-Control-Allow-Headers', 'X-Requested-With')
@@ -34,8 +34,11 @@ class RequestHandler(BaseHTTPRequestHandler):
             # Send the content fetched from the URL
             self.wfile.write(content)
         except Exception as e:
-            self.send_response(500)
+            self.send_response(200)
             self.send_header('Content-type', 'text/plain')
+            self.send_header('Access-Control-Allow-Origin', '*')  # Allow requests from any origin
+            self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+            self.send_header('Access-Control-Allow-Headers', 'X-Requested-With')
             self.end_headers()
             self.wfile.write(b"Error fetching URL: " + str(e).encode())
 
