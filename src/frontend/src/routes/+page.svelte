@@ -14,6 +14,7 @@
   let is_part_id = false;
   let author = "";
   let name = "";
+  let cover = "";
 
   let button_disabled = false;
   $: button_disabled =
@@ -59,12 +60,16 @@
   async function update_info() {
     if (browser && story_id) {
       let response = await fetch(
-        window.location.href.split("?")[0] + "get_info/" + story_id + "/title,user(username)",
+        window.location.href.split("?")[0] +
+          "get_info/" +
+          story_id +
+          "/title,user(username),cover",
       );
       try {
         let json = await response.json();
         name = json.title;
         author = json.user.username;
+        cover = json.cover;
       } catch (err) {
         name = "Unknown Story";
         author = "Unknown Author";
@@ -107,10 +112,6 @@
                 required
                 name="story_id"
               />
-              <h1 style="front-size:18px;">Name:</h1>
-              <h1 style="font-size:18px;color:#FF6122;">{name}</h1>
-              <h1 style="front-size:18px;">Author:</h1>
-              <h1 style="font-size:18px;color:#FF6122;">{author}</h1>
               <label class="label" for="story_id">
                 {#if is_part_id}
                   <p class=" text-red-500">
@@ -130,6 +131,11 @@
                   >
                 {/if}
               </label>
+              <h1 style="front-size:18px;">Name:</h1>
+              <h1 style="font-size:18px;color:#FF6122;">{name}</h1>
+              <h1 style="front-size:18px;">Author:</h1>
+              <h1 style="font-size:18px;color:#FF6122;">{author}</h1>
+              <img src={cover} alt={name} style="width:150px;height:200px;" />
               <label class="cursor-pointer label">
                 <span class="label-text"
                   >This is a Paid Story, and I've purchased it</span
