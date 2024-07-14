@@ -60,11 +60,7 @@
   async function update_info() {
     if (browser && story_id) {
       let response = await fetch(
-        "http://" +
-          window.location.href.split("//")[1].split(":")[0] +
-          ":5043/https://www.wattpad.com/api/v3/stories/" +
-          story_id +
-          "?fields=title",
+        window.location.href.split("?")[0] + "get_info/" + story_id,
       );
       let name_wait;
       try {
@@ -74,13 +70,7 @@
         name_wait = "Unknown Story";
       }
 
-      response = await fetch(
-        "http://" +
-          window.location.href.split("//")[1].split(":")[0] +
-          ":5043/https://www.wattpad.com/api/v3/stories/" +
-          story_id +
-          "?fields=user(username)",
-      );
+      response = await fetch(window.location.href.split("?")[0] + "get_info/" + story_id);
       try {
         let json = await response.json();
         author = json.user.username;

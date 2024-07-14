@@ -14,7 +14,7 @@ from create_book import (
 import tempfile
 from io import BytesIO
 from fastapi.staticfiles import StaticFiles
-from subprocess import Popen
+from urllib.request import urlopen, Request
 
 app = FastAPI()
 BUILD_PATH = Path(__file__).parent / "build"
@@ -91,11 +91,23 @@ async def download_book(
     )
 
 
+@app.get("/get_info/{story_id}")
+async def get_info(story_id: int):
+    try:
+        req = Request(
+            f"https://www.wattpad.com/api/v3/stories/{story_id}?fields=title,user(username)",
+            headers={"User-Agent": "Mozilla/5.0"},
+        )
+        response = urlopen(req)
+        content = response.read()
+        return HTMLResponse(status_code=200, content=content)
+    except(Exception) as error:
+        return HTMLResponse(status_code=500, content=str(error))
+
 app.mount("/", StaticFiles(directory=BUILD_PATH), "static")
 
 
 if __name__ == "__main__":
     import uvicorn
 
-    p = Popen(['python3','/app/request_forward.py'])
     uvicorn.run(app, host="0.0.0.0", port=80)
