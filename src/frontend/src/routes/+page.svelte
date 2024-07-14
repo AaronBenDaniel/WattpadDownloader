@@ -59,7 +59,7 @@
   async function update_info() {
     if (browser && story_id) {
       let response = await fetch(
-        window.location.href.split("?")[0] + "get_info/" + story_id,
+        window.location.href.split("?")[0] + "get_info/" + story_id + "/title,user(username)",
       );
       try {
         let json = await response.json();
