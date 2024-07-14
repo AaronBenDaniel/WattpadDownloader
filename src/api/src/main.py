@@ -92,7 +92,7 @@ async def download_book(
 
 
 @app.get("/get_info/{story_id}/{fields}")
-async def get_info(story_id: int, fields: str):
+def get_info(story_id: int, fields: str):
     try:
         req = Request(
             f"https://www.wattpad.com/api/v3/stories/{story_id}?fields={fields}",
