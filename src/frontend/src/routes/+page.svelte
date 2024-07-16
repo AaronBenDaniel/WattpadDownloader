@@ -14,7 +14,6 @@
   let is_part_id = false;
   let author = "";
   let name = "";
-  let cover = "";
 
   let button_disabled = false;
   $: button_disabled =
@@ -44,17 +43,14 @@
         raw_story_id = story_id;
       } else {
         // https://www.wattpad.com/939051741-wattpad-books-presents-part-name
-        is_part_id = true;
-        raw_story_id = "";
-        story_id = "";
-        author = "Unknown Author";
-        name = "Unknown Story";
+        story_id = raw_story_id.split(".com/")[1].split("-")[0];
+        get_story_url();
       }
     } else {
       story_id = parseInt(raw_story_id) || ""; // parseInt returns NaN for undefined values.
       raw_story_id = story_id;
     }
-    if (!is_part_id) update_info();
+    update_info();
   }
 
   async function update_info() {
@@ -63,17 +59,31 @@
         window.location.href.split("?")[0] +
           "get_info/" +
           story_id +
-          "/title,user(username),cover",
+          "/v3stories/title,user(username)",
       );
       try {
         let json = await response.json();
         name = json.title;
         author = json.user.username;
-        cover = json.cover;
       } catch (err) {
         name = "Unknown Story";
         author = "Unknown Author";
       }
+    }
+  }
+
+  async function get_story_url() {
+    let response;
+    if (browser) {
+      response = await fetch(
+        window.location.href.split("?")[0] +
+          "get_info/" +
+          story_id +
+          "/getstoryurl/url",
+      );
+      response = await response.json();
+      story_id = String(response);
+      raw_story_id = story_id;
     }
   }
 </script>
@@ -135,7 +145,6 @@
               <h1 style="font-size:18px;color:#FF6122;">{name}</h1>
               <h1 style="front-size:18px;">Author:</h1>
               <h1 style="font-size:18px;color:#FF6122;">{author}</h1>
-              <img src={cover} alt={name} style="width:150px;height:200px;" />
               <label class="cursor-pointer label">
                 <span class="label-text"
                   >This is a Paid Story, and I've purchased it</span

@@ -15,6 +15,8 @@ import tempfile
 from io import BytesIO
 from fastapi.staticfiles import StaticFiles
 from urllib.request import urlopen, Request
+from urllib import parse
+from json import loads
 
 app = FastAPI()
 BUILD_PATH = Path(__file__).parent / "build"
@@ -91,16 +93,40 @@ async def download_book(
     )
 
 
-@app.get("/get_info/{story_id}/{fields}")
-def get_info(story_id: int, fields: str):
-    try:
+@app.get("/get_info/{story_id}/{endpoint}/{fields}")
+def get_info(story_id: int, endpoint: str, fields: str):
+    def get_url(url: str):
         req = Request(
-            f"https://www.wattpad.com/api/v3/stories/{story_id}?fields={fields}",
+            url,
             headers={"User-Agent": "Mozilla/5.0"},
         )
         response = urlopen(req)
-        content = response.read()
-        return HTMLResponse(status_code=200, content=content)
+        return response.read()
+
+    try:
+        if endpoint == "v3stories":
+            url = f"https://www.wattpad.com/api/v3/stories/{story_id}?fields={fields}"
+        elif endpoint == "v3storyparts":
+            url = (
+                f"https://www.wattpad.com/api/v3/story_parts/{story_id}?fields={fields}"
+            )
+        elif endpoint == "getstoryurl":
+            try:
+                url = get_url(
+                    f"https://www.wattpad.com/api/v3/story_parts/{story_id}?fields={fields}"
+                )
+                url = loads(url)
+                url = parse.unquote(url["url"])
+                content = str(get_url(url))
+                content = content[
+                    (content.find(':"https://www.wattpad.com/story/') + 32):
+                ]
+                content = content[: content.find("-")]
+                return HTMLResponse(status_code=200, content=content)
+            except Exception as error:
+                return HTMLResponse(status_code=500, content=str(error))
+
+        return HTMLResponse(status_code=200, content=get_url(url))
     except Exception as error:
         return HTMLResponse(status_code=500, content=str(error))
 
