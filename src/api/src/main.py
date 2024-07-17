@@ -93,8 +93,8 @@ async def download_book(
     )
 
 
-@app.get("/get_info/{story_id}/{endpoint}/{fields}")
-def get_info(story_id: int, endpoint: str, fields: str):
+@app.get("/get_info/{id}/{endpoint}/{fields}")
+def get_info(id: int, endpoint: str, fields: str):
     def get_url(url: str):
         req = Request(
             url,
@@ -105,26 +105,23 @@ def get_info(story_id: int, endpoint: str, fields: str):
 
     try:
         if endpoint == "v3stories":
-            url = f"https://www.wattpad.com/api/v3/stories/{story_id}?fields={fields}"
+            url = f"https://www.wattpad.com/api/v3/stories/{id}?fields={fields}"
         elif endpoint == "v3storyparts":
             url = (
-                f"https://www.wattpad.com/api/v3/story_parts/{story_id}?fields={fields}"
+                f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
             )
         elif endpoint == "getstoryurl":
-            try:
-                url = get_url(
-                    f"https://www.wattpad.com/api/v3/story_parts/{story_id}?fields={fields}"
-                )
-                url = loads(url)
-                url = parse.unquote(url["url"])
-                content = str(get_url(url))
-                content = content[
-                    (content.find(':"https://www.wattpad.com/story/') + 32):
-                ]
-                content = content[: content.find("-")]
-                return HTMLResponse(status_code=200, content=content)
-            except Exception as error:
-                return HTMLResponse(status_code=500, content=str(error))
+            url = get_url(
+                f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
+            )
+            url = loads(url)
+            url = parse.unquote(url["url"])
+            content = str(get_url(url))
+            content = content[
+                (content.find(':"https://www.wattpad.com/story/') + 32):
+            ]
+            content = content[: content.find("-")]
+            return HTMLResponse(status_code=200, content=content)
 
         return HTMLResponse(status_code=200, content=get_url(url))
     except Exception as error:
