@@ -107,19 +107,15 @@ def get_info(id: int, endpoint: str, fields: str):
         if endpoint == "v3stories":
             url = f"https://www.wattpad.com/api/v3/stories/{id}?fields={fields}"
         elif endpoint == "v3storyparts":
-            url = (
-                f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
-            )
-        elif endpoint == "getstoryurl":
+            url = f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
+        elif endpoint == "getstoryid":
             url = get_url(
                 f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
             )
             url = loads(url)
             url = parse.unquote(url["url"])
             content = str(get_url(url))
-            content = content[
-                (content.find(':"https://www.wattpad.com/story/') + 32):
-            ]
+            content = content[(content.find(':"https://www.wattpad.com/story/') + 32) :]
             content = content[: content.find("-")]
             return HTMLResponse(status_code=200, content=content)
 

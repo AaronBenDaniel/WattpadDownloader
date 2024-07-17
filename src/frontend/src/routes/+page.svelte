@@ -11,7 +11,8 @@
   let url = "";
 
   let raw_story_id = "";
-  let is_part_id = false;
+  let is_part_id = "";
+  let is_story_id = "";
   let author = "";
   let name = "";
 
@@ -28,7 +29,6 @@
       : "");
 
   $: {
-    is_part_id = false;
     if (raw_story_id.includes("wattpad.com")) {
       // Originally, I was going to call the Wattpad API (wattpad.com/api/v3/stories/${story_id}), but Wattpad kept blocking those requests. I suspect it has something to do with the Origin header, I wasn't able to remove it.
       // In the future, if this is considered, it would be cool if we could derive the Story ID from a pasted Part URL. Refer to @AaronBenDaniel's https://github.com/AaronBenDaniel/WattpadDownloader/blob/49b29b245188149f2d24c0b1c59e4c7f90f289a9/src/api/src/create_book.py#L156 (https://www.wattpad.com/api/v3/story_parts/{part_id}?fields=url).
@@ -44,13 +44,25 @@
       } else {
         // https://www.wattpad.com/939051741-wattpad-books-presents-part-name
         story_id = raw_story_id.split(".com/")[1].split("-")[0];
-        get_story_url();
+        get_story_id();
       }
     } else {
       story_id = parseInt(raw_story_id) || ""; // parseInt returns NaN for undefined values.
       raw_story_id = story_id;
     }
     update_info();
+  }
+
+  $: {
+    if (story_id) {
+      test_story_id();
+      test_part_id();
+      console.log(is_story_id);
+      console.log(is_part_id);
+      if (is_part_id && !is_story_id) {
+        get_story_id();
+      }
+    }
   }
 
   async function update_info() {
@@ -72,18 +84,56 @@
     }
   }
 
-  async function get_story_url() {
+  async function get_story_id() {
     let response;
-    if (browser) {
+    if (browser && story_id) {
       response = await fetch(
         window.location.href.split("?")[0] +
           "get_info/" +
           story_id +
-          "/getstoryurl/url",
+          "/getstoryid/url",
       );
       response = await response.json();
       story_id = String(response);
       raw_story_id = story_id;
+    }
+  }
+
+  async function test_story_id() {
+    if (browser && story_id) {
+      let response = await fetch(
+        window.location.href.split("?")[0] +
+          "get_info/" +
+          story_id +
+          "/v3stories/title",
+      );
+      try {
+        let json = await response.json();
+        is_story_id = true;
+      } catch (error) {
+        console.log("Story");
+        console.log(error);
+        is_story_id = false;
+      }
+    }
+  }
+
+  async function test_part_id() {
+    if (browser && story_id) {
+      let response = await fetch(
+        window.location.href.split("?")[0] +
+          "get_info/" +
+          story_id +
+          "/getstoryid/url",
+      );
+      try {
+        let json = await response.json();
+        is_part_id = true;
+      } catch (error) {
+        console.log(error);
+        console.log("Part");
+        is_part_id = false;
+      }
     }
   }
 </script>
@@ -123,7 +173,7 @@
                 name="story_id"
               />
               <label class="label" for="story_id">
-                {#if is_part_id}
+                {#if false}
                   <p class=" text-red-500">
                     Refer to (<button
                       class="link font-semibold"
