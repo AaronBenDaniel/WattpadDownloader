@@ -57,8 +57,6 @@
     if (story_id) {
       test_story_id();
       test_part_id();
-      console.log(is_story_id);
-      console.log(is_part_id);
       if (is_part_id && !is_story_id) {
         get_story_id();
       }
@@ -111,8 +109,6 @@
         let json = await response.json();
         is_story_id = true;
       } catch (error) {
-        console.log("Story");
-        console.log(error);
         is_story_id = false;
       }
     }
@@ -130,8 +126,6 @@
         let json = await response.json();
         is_part_id = true;
       } catch (error) {
-        console.log(error);
-        console.log("Part");
         is_part_id = false;
       }
     }
