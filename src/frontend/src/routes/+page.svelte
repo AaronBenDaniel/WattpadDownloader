@@ -15,6 +15,8 @@
   let is_story_id = "";
   let author = "";
   let name = "";
+  let suggested_id = "";
+  let suggested_name = "";
 
   let button_disabled = false;
   $: button_disabled =
@@ -44,7 +46,8 @@
       } else {
         // https://www.wattpad.com/939051741-wattpad-books-presents-part-name
         story_id = raw_story_id.split(".com/")[1].split("-")[0];
-        get_story_id();
+        story_id = get_story_id();
+        raw_story_id = story_id;
       }
     } else {
       story_id = parseInt(raw_story_id) || ""; // parseInt returns NaN for undefined values.
@@ -55,12 +58,28 @@
 
   $: {
     if (story_id) {
-      test_story_id();
-      test_part_id();
-      if (is_part_id && !is_story_id) {
-        get_story_id();
-      }
+      handle_id();
     }
+  }
+
+  async function handle_id() {
+    await test_story_id();
+    await test_part_id();
+    if (is_part_id && !is_story_id) {
+      story_id = await get_story_id();
+    }
+    if (is_part_id && is_story_id) {
+      suggested_id = await get_story_id();
+      suggested_name = "TEST NAME";
+    } else {
+      suggested_id = "";
+    }
+  }
+
+  function switchid() {
+    story_id = get_story_id();
+    raw_story_id = story_id;
+    console.log("Switch");
   }
 
   async function update_info() {
@@ -92,8 +111,7 @@
           "/getstoryid/url",
       );
       response = await response.json();
-      story_id = String(response);
-      raw_story_id = story_id;
+      return String(response);
     }
   }
 
@@ -167,23 +185,12 @@
                 name="story_id"
               />
               <label class="label" for="story_id">
-                {#if false}
-                  <p class=" text-red-500">
-                    Refer to (<button
-                      class="link font-semibold"
-                      onclick="StoryIDTutorialModal.showModal()"
-                      data-umami-event="Part StoryIDTutorialModal Open"
-                      >How to get a Story ID</button
-                    >).
-                  </p>
-                {:else}
-                  <button
-                    class="label-text link font-semibold"
-                    onclick="StoryIDTutorialModal.showModal()"
-                    data-umami-event="StoryIDTutorialModal Open"
-                    >How to get a Story ID</button
-                  >
-                {/if}
+                <button
+                  class="label-text link font-semibold"
+                  onclick="StoryIDTutorialModal.showModal()"
+                  data-umami-event="StoryIDTutorialModal Open"
+                  >How to get a Story ID</button
+                >
               </label>
               <h1 style="front-size:18px;">Name:</h1>
               <h1 style="font-size:18px;color:#FF6122;">{name}</h1>
@@ -222,6 +229,11 @@
                     required
                   />
                 </label>
+              {/if}
+              {#if suggested_id}
+                <button onclick={switchid()}
+                  >Did you mean {suggested_name}?</button
+                >
               {/if}
             </div>
 
