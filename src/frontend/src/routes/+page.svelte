@@ -75,6 +75,8 @@
         switchid();
         suggested_id = "";
       }
+    } else {
+      suggested_id = "";
     }
   }
 
