@@ -17,6 +17,7 @@
   let name = "";
   let suggested_id = "";
   let suggested_name = "";
+  let part_id = "";
 
   let button_disabled = false;
   $: button_disabled =
@@ -65,19 +66,20 @@
   async function handle_id() {
     await test_story_id();
     await test_part_id();
-    if (is_part_id && !is_story_id) {
-      story_id = await get_story_id();
-    }
-    if (is_part_id && is_story_id) {
-      suggested_id = await get_story_id();
-      suggested_name = await get_title(suggested_id);
-    } else {
-      suggested_id = "";
+    if (is_part_id) {
+      part_id = await get_story_id();
+      if (is_story_id) {
+        suggested_id = part_id;
+        suggested_name = await get_title(suggested_id);
+      } else {
+        switchid();
+        suggested_id = "";
+      }
     }
   }
 
   async function switchid() {
-    story_id = await get_story_id();
+    story_id = part_id;
     raw_story_id = story_id;
   }
 
