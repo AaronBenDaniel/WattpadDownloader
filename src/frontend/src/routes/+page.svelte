@@ -248,12 +248,12 @@
                 </label>
               {/if}
               {#if suggested_id}
-                <button on:click={() => switchid()}
+                <a class="btn btn-light" on:click={() => switchid()}
                   ><i
                     ><span style="color:#000000">Did you mean </span><span
                       style="color: #FF6122">{suggested_name}</span
                     >?</i
-                  ></button
+                  ></a
                 >
               {/if}
             </div>
