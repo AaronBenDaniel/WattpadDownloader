@@ -70,16 +70,15 @@
     }
     if (is_part_id && is_story_id) {
       suggested_id = await get_story_id();
-      suggested_name = "TEST NAME";
+      suggested_name = await get_title(suggested_id);
     } else {
       suggested_id = "";
     }
   }
 
-  function switchid() {
-    story_id = get_story_id();
+  async function switchid() {
+    story_id = await get_story_id();
     raw_story_id = story_id;
-    console.log("Switch");
   }
 
   async function update_info() {
@@ -98,6 +97,21 @@
         name = "Unknown Story";
         author = "Unknown Author";
       }
+    }
+  }
+
+  async function get_title(id) {
+    if (browser && id) {
+      let response = await fetch(
+        window.location.href.split("?")[0] +
+          "get_info/" +
+          id +
+          "/v3stories/title",
+      );
+      try {
+        let json = await response.json();
+        return json.title;
+      } catch (err) {}
     }
   }
 
@@ -231,8 +245,12 @@
                 </label>
               {/if}
               {#if suggested_id}
-                <button onclick={switchid()}
-                  >Did you mean {suggested_name}?</button
+                <button on:click={() => switchid()}
+                  ><i
+                    ><span style="color:#000000">Did you mean </span><span
+                      style="color: #FF6122">{suggested_name}</span
+                    >?</i
+                  ></button
                 >
               {/if}
             </div>
