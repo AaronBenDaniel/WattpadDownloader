@@ -47,7 +47,6 @@
       } else {
         // https://www.wattpad.com/939051741-wattpad-books-presents-part-name
         story_id = raw_story_id.split(".com/")[1].split("-")[0];
-        story_id = get_story_id();
         raw_story_id = story_id;
       }
     } else {
