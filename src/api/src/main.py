@@ -113,7 +113,7 @@ def get_info(id: int, endpoint: str, fields: str):
                 f"https://www.wattpad.com/api/v3/story_parts/{id}?fields={fields}"
             )
             url = loads(url)
-            url = parse.unquote(url["url"])
+            url = url["url"]
             content = str(get_url(url))
             content = content[(content.find(':"https://www.wattpad.com/story/') + 32) :]
             content = content[: content.find("-")]
