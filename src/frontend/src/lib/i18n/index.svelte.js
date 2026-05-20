@@ -6,10 +6,11 @@ import my from './locales/my.json';
 import es from './locales/es.json';
 import pt from './locales/pt.json';
 import tr from './locales/tr.json';
+import ms from './locales/ms.json';
 
-const allTranslations = { en, vi, th, si, my, es, pt, tr };
+const allTranslations = { en, vi, th, si, my, es, pt, tr, ms };
 const STORAGE_KEY = 'wpd-locale';
-const SUPPORTED = ['en', 'vi', 'th', 'si', 'my', 'es', 'pt', 'tr'];
+const SUPPORTED = ['en', 'vi', 'th', 'si', 'my', 'es', 'pt', 'tr', 'ms'];
 
 export const i18n = $state({ locale: 'en' });
 
@@ -22,6 +23,8 @@ export const LOCALES = [
   { code: 'es', name: 'Español', englishName: 'Spanish', flag: '🇪🇸', searchTerms: 'spanish espanol spain' },
   { code: 'pt', name: 'Português', englishName: 'Portuguese', flag: '🇧🇷', searchTerms: 'portuguese portugues brazil brasil portugal' },
   { code: 'tr', name: 'Türkçe', englishName: 'Turkish', flag: '🇹🇷', searchTerms: 'turkish turkce turkey turk' },
+  { code: 'ms', name: 'بهاس ملايو', englishName: 'Bahasa Melayu', flag: '🇲🇾', searchTerms: 'Malay Bahasa Melayu Malasian' },
+
 ];
 
 export function t(key) {
