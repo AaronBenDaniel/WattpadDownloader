@@ -3,7 +3,7 @@ from tempfile import _TemporaryFileWrapper
 from typing import Literal
 
 from bs4 import BeautifulSoup
-from ebooklib.epub import EpubBook
+from epublib.epub import EpubBook
 
 from ..models import Story
 

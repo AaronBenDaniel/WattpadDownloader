@@ -1,7 +1,7 @@
 from io import BytesIO
 
 from bs4 import BeautifulSoup
-from ebooklib import epub
+from epublib import epub
 from re import sub
 
 from ..models import Story
@@ -28,35 +28,24 @@ class EPUBGenerator(AbstractGenerator):
         self.book.set_identifier(f"wpd_{self.story['id']}")
         self.book.add_author(self.story["user"]["username"])
 
-        self.book.add_metadata("DC", "title", self.story["title"])
+        self.book.set_title(self.story["title"])
         self.book.add_metadata("DC", "description", self.story["description"])
         self.book.add_metadata("DC", "date", self.story["createDate"])
-        self.book.add_metadata("DC", "modified", self.story["modifyDate"])
-        self.book.add_metadata("DC", "language", self.story["language"]["name"])
+        self.book.set_modified(self.story["modifyDate"])
+        self.book.set_language("en")#self.story["language"]["name"])
 
         for tag in self.story["tags"]:
             self.book.add_metadata("DC", "subject", tag)
         self.book.add_metadata(
-            None,
             "meta",
-            "",
-            {"name": "mature", "content": str(int(self.story["mature"]))},
+            "mature",
+            str(int(self.story["mature"])),
         )
         self.book.add_metadata(
-            None,
             "meta",
-            "",
-            {"name": "completed", "content": str(int(self.story["completed"]))},
+            "completed",
+            str(int(self.story["completed"])),
         )
-
-    def add_cover(self):
-        """Add cover to epub."""
-        self.book.set_cover("cover.jpg", self.cover)
-        cover_chapter = epub.EpubHtml(
-            file_name="titlepage.xhtml",  # Standard for cover page
-        )
-        cover_chapter.set_content('<img src="cover.jpg">')
-        self.book.add_item(cover_chapter)
 
     def add_chapters(self):
         """Add chapters to epub, replacing references to image urls to static image paths if images are provided during initialization."""
@@ -64,7 +53,8 @@ class EPUBGenerator(AbstractGenerator):
 
         for idx, (part, tree) in enumerate(zip(self.story["parts"], self.parts)):
             chapter = epub.EpubHtml(
-                title=sub(r'[\x00-\x1F\x7F]', '', part["title"]), file_name=f"{idx}_{part['id']}.xhtml" # Removes control characters from chapter title
+                title=sub(r"[\x00-\x1F\x7F]", "", part["title"]),
+                file_name=f"{idx}_{part['id']}.xhtml",  # Removes control characters from chapter title
             )
 
             if self.images:
@@ -83,20 +73,11 @@ class EPUBGenerator(AbstractGenerator):
             self.book.add_item(chapter)
             chapters.append(chapter)
 
-        # ! Review, are these needed? #11
-        self.book.toc = chapters
-
-        # Thanks https://github.com/aerkalov/ebooklib/blob/master/samples/09_create_image/create.py
-        self.book.add_item(epub.EpubNcx())
-        self.book.add_item(epub.EpubNav())
-
-        # create spine
-        self.book.spine = ["nav"] + chapters
-
     def compile(self):
         self.add_metadata()
-        self.add_cover()
+        self.book.set_cover("cover.jpg", self.cover)
         self.add_chapters()
+        self.book.enable_legacy_support(True)
         return True
 
     def dump(self) -> BytesIO:
