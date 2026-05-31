@@ -1,0 +1,18 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "run-wattpaddownloader",
+      "type": "shell",
+      "command": "cd src/frontend && npm run build && cd \"${workspaceFolder}\" && src/api/.venv/bin/python src/api/src/main.py",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      }
+    }
+  ]
+}

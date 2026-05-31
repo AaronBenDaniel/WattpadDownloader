@@ -37,6 +37,6 @@ RUN ln -s /app/src/pdf/fonts /tmp/fonts
 
 WORKDIR /app/src
 
-EXPOSE 80
+EXPOSE 5042
 
 CMD [ "uv", "run", "main.py"]

@@ -1,3 +1,16 @@
 {
-    "python.analysis.autoImportCompletions": true
+    "python.analysis.autoImportCompletions": true,
+    "statusbar_command.commands": [
+        {
+            "text": "$(rocket) Run WattpadDownloader",
+            "tooltip": "Build frontend and run API",
+            "command": "workbench.action.tasks.runTask",
+            "arguments": [
+                "run-wattpaddownloader"
+            ],
+            "color": "#4EC9B0",
+            "alignment": "left",
+            "priority": 100
+        }
+    ]
 }

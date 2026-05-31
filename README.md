@@ -24,7 +24,7 @@ Still not convinced? Take a look some [sample downloads](./samples/).
 ## Set Up
 1. Clone the repository: `git clone https://github.com/TheOnlyWayUp/WattpadDownloader/ && cd WattpadDownloader`
 2. Build the image: `docker build . -t 'wp_downloader'` (This takes about 2 Minutes)
-3. Run the Container: `docker run -d -p 5042:80 wp_downloader`
+3. Run the Container: `docker run -d -p 5042:5042 wp_downloader`
 
 That's it! You can use your instance at `http://localhost:5042`. API Documentation is available at `http://localhost:5042/docs`.
 
@@ -38,9 +38,9 @@ REDIS_CONNECTION_URL=redis://username:password@host:port
 ```
 
 
-2. Run the container and supply the .env file, `docker run -d -p 5042:80 --env-file .env wp_downloader`
+2. Run the container and supply the .env file, `docker run -d -p 5042:5042 --env-file .env wp_downloader`
 Alternatively, if Redis is running on localhost
-2. Modify your `.env` file, replacing `localhost` with `host.docker.internal`. `redis://localhost:6379` should become `redis://host.docker.internal:6379`. Then, start the container, `docker run -d -p 5042:80 --env-file .env --add-host host.docker.internal:host-gateway wp_downloader`
+2. Modify your `.env` file, replacing `localhost` with `host.docker.internal`. `redis://localhost:6379` should become `redis://host.docker.internal:6379`. Then, start the container, `docker run -d -p 5042:5042 --env-file .env --add-host host.docker.internal:host-gateway wp_downloader`
 
 ## Development
 - Developers, ensure you have `wkhtmltopdf` available on your PATH. 
