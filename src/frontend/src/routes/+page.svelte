@@ -138,7 +138,7 @@
           >
             {t("title")}
           </h1>
-          <div role="alert" class="alert mt-10 max-w-md bg-green-200 break-words">
+          <div role="alert" class="alert mt-10 max-w-md break-words bg-green-200 text-black donator-alert">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -183,7 +183,7 @@
           <!-- 1 · SOURCE -->
           <div class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 pt-0.5" data-section="source">
             <span
-              class="inline-flex items-center justify-center size-[22px] rounded-md bg-primary/25 text-amber-800 font-bold text-xs border border-primary/30 mt-0.5"
+              class="inline-flex items-center justify-center size-[22px] rounded-md step-badge-active font-bold text-xs border border-primary/30 mt-0.5"
               >1</span
             >
             <div class="flex items-center gap-2.5 min-h-6">
@@ -246,7 +246,7 @@
             <span
               class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
                 border mt-0.5 {urlNeeded
-                ? 'bg-primary/25 text-amber-800 border-primary/30'
+                ? 'step-badge-active border-primary/30'
                 : 'bg-base-200 text-base-content/50 border-base-300'}"
               >2</span
             >
@@ -338,7 +338,7 @@
             <span
               class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
                 border mt-0.5 {loginRequired
-                ? 'bg-primary/25 text-amber-800 border-primary/30'
+                ? 'step-badge-active border-primary/30'
                 : 'bg-base-200 text-base-content/50 border-base-300'}"
               >3</span
             >
@@ -484,7 +484,7 @@
             <a
               href="https://buymeacoffee.com/theonlywayup"
               target="_blank"
-              class="btn btn-lg mt-10 bg-cyan-200 hover:bg-green-200">{t("buy_coffee")}</a
+              class="btn btn-lg mt-10 bg-cyan-200 hover:bg-cyan-300 text-black coffee-btn">{t("buy_coffee")}</a
             >
             <button
               onclick={() => {
@@ -510,17 +510,17 @@
       <li>{t("modal_step1")}</li>
       <li>
         {t("modal_step2_before")}
-        <span class="bg-slate-100 p-1 font-mono"
-          >wattpad.com/<span class="rounded-sm bg-amber-200">story</span>/9341306-news-updates</span
+        <span class="bg-base-200 p-1 font-mono"
+          >wattpad.com/<span class="rounded-sm bg-warning/30">story</span>/9341306-news-updates</span
         >{t("modal_step2_after")}
       </li>
       <li>
-        <span class="bg-slate-100 p-1 font-mono"
+        <span class="bg-base-200 p-1 font-mono"
           >https://www.wattpad.com/1623482034-news-updates</span
         >{t("modal_step3_after")}
       </li>
       <li>
-        {t("modal_step4")}<span class="bg-slate-100 p-1 font-mono"
+        {t("modal_step4")}<span class="bg-base-200 p-1 font-mono"
           >https://www.wattpad.com/list/1582628905</span
         >
       </li>

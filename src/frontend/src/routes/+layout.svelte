@@ -1,6 +1,7 @@
 <script>
   import "../app.css";
   import { init, i18n, t } from '$lib/i18n/index.svelte.js';
+  import ThemeToggle from '$lib/components/ThemeToggle.svelte';
   /**
    * @typedef {Object} Props
    * @property {import('svelte').Snippet} [children]
@@ -25,6 +26,10 @@
     }
   </style>
 </svelte:head>
+
+<div class="fixed top-4 right-4 z-50">
+  <ThemeToggle />
+</div>
 
 {@render children()}
 
