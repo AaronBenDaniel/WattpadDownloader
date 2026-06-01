@@ -1,7 +1,7 @@
 <script>
   import "../app.css";
-  import { init, i18n, t } from '$lib/i18n/index.svelte.js';
-  import ThemeToggle from '$lib/components/ThemeToggle.svelte';
+  import { init, i18n, t } from "$lib/i18n/index.svelte.js";
+  import ThemeToggle from "$lib/components/ThemeToggle.svelte";
   /**
    * @typedef {Object} Props
    * @property {import('svelte').Snippet} [children]
@@ -33,9 +33,7 @@
 
 {@render children()}
 
-<footer
-  class="footer footer-center fixed bottom-0 bg-base-300 p-4 text-base-content"
->
+<footer class="footer footer-center bg-base-300 text-base-content fixed bottom-0 p-4">
   <aside>
     <div class="flex w-full max-w-lg flex-row">
       <a

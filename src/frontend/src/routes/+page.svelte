@@ -129,16 +129,19 @@
 <div>
   <div class="hero min-h-screen">
     <div
-      class="hero-content bg-base-100/50 flex-col rounded py-32 shadow-sm lg:flex-row-reverse lg:p-16 lg:items-start"
+      class="hero-content bg-base-100/50 flex-col rounded py-32 shadow-sm lg:flex-row-reverse lg:items-start lg:p-16"
     >
       {#if !afterDownloadPage}
-        <div class="text-center lg:p-10 lg:text-left max-w-lg">
+        <div class="max-w-lg text-center lg:p-10 lg:text-left">
           <h1
             class="bg-gradient-to-r from-red-700 via-yellow-600 to-pink-600 bg-clip-text text-5xl font-extrabold text-transparent"
           >
             {t("title")}
           </h1>
-          <div role="alert" class="alert mt-10 max-w-md break-words bg-green-200 text-black donator-alert">
+          <div
+            role="alert"
+            class="alert donator-alert mt-10 max-w-md bg-green-200 break-words text-black"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -166,16 +169,16 @@
             {t("hero_description")}
           </p>
           <div class="pt-4">
-            <div class="flex items-center justify-center lg:justify-start mb-2">
+            <div class="mb-2 flex items-center justify-center lg:justify-start">
               {@html ICONS.globe}
-              <span class="text-lg font-bold ml-1">Site Language</span>
+              <span class="ml-1 text-lg font-bold">Site Language</span>
             </div>
             <LanguageSelector />
           </div>
         </div>
 
         <form
-          class="bg-base-100 border border-base-300 rounded-2xl px-5 pt-4 pb-4 shadow-xl"
+          class="bg-base-100 border-base-300 rounded-2xl border px-5 pt-4 pb-4 shadow-xl"
           id="wpd-download-form"
         >
           <input type="hidden" name="path" />
@@ -183,36 +186,22 @@
           <!-- 1 · SOURCE -->
           <div class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 pt-0.5" data-section="source">
             <span
-              class="inline-flex items-center justify-center size-[22px] rounded-md step-badge-active font-bold text-xs border border-primary/30 mt-0.5"
+              class="step-badge-active border-primary/30 mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border text-xs font-bold"
               >1</span
             >
-            <div class="flex items-center gap-2.5 min-h-6">
-              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">{t("source")}</h3>
+            <div class="flex min-h-6 items-center gap-2.5">
+              <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">{t("source")}</h3>
             </div>
             <div class="col-start-2">
               <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Download source">
-                {#each [
-                  { key: "url", icon: ICONS.link, labelKey: "url", descKey: "url_desc" },
-                  {
-                    key: "library",
-                    icon: ICONS.library,
-                    labelKey: "library",
-                    descKey: "library_desc"
-                  },
-                  {
-                    key: "archive",
-                    icon: ICONS.archive,
-                    labelKey: "archive",
-                    descKey: "archive_desc"
-                  }
-                ] as tile}
+                {#each [{ key: "url", icon: ICONS.link, labelKey: "url", descKey: "url_desc" }, { key: "library", icon: ICONS.library, labelKey: "library", descKey: "library_desc" }, { key: "archive", icon: ICONS.archive, labelKey: "archive", descKey: "archive_desc" }] as tile}
                   <button
                     type="button"
-                    class="flex-1 basis-28 min-w-0 grid grid-cols-[auto_1fr] items-center gap-x-2.5 gap-y-px
-                      p-2.5 rounded-lg border cursor-pointer text-left transition-all duration-150
-                      focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2
+                    class="focus-visible:outline-primary grid min-w-0 flex-1 basis-28 cursor-pointer grid-cols-[auto_1fr] items-center
+                      gap-x-2.5 gap-y-px rounded-lg border p-2.5 text-left transition-all
+                      duration-150 focus-visible:outline-2 focus-visible:outline-offset-2
                       {source === tile.key
-                      ? 'border-primary bg-primary/5 ring-1 ring-inset ring-primary'
+                      ? 'border-primary bg-primary/5 ring-primary ring-1 ring-inset'
                       : 'bg-base-200/30 border-base-300 hover:border-base-content/20 hover:bg-base-100'}"
                     role="radio"
                     aria-checked={source === tile.key}
@@ -220,14 +209,15 @@
                     onclick={() => (source = tile.key)}
                   >
                     <span
-                      class="row-start-1 col-start-1 size-5 inline-flex items-center justify-center
+                      class="col-start-1 row-start-1 inline-flex size-5 items-center justify-center
                         {source === tile.key ? 'text-primary' : 'text-base-content/60'}"
                       >{@html tile.icon}</span
                     >
-                    <span class="row-start-1 col-start-2 font-semibold text-sm"
+                    <span class="col-start-2 row-start-1 text-sm font-semibold"
                       >{t(tile.labelKey)}</span
                     >
-                    <span class="row-start-2 col-span-full text-xs text-base-content/50 leading-snug"
+                    <span
+                      class="text-base-content/50 col-span-full row-start-2 text-xs leading-snug"
                       >{t(tile.descKey)}</span
                     >
                   </button>
@@ -238,24 +228,23 @@
 
           <!-- 2 · STORY URL -->
           <div
-            class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 py-2 border-t border-base-200
+            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2
               transition-opacity duration-200 {!urlNeeded ? 'opacity-50' : ''}"
             data-section="url"
             aria-disabled={!urlNeeded}
           >
             <span
-              class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
-                border mt-0.5 {urlNeeded
+              class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
+                text-xs font-bold {urlNeeded
                 ? 'step-badge-active border-primary/30'
-                : 'bg-base-200 text-base-content/50 border-base-300'}"
-              >2</span
+                : 'bg-base-200 text-base-content/50 border-base-300'}">2</span
             >
-            <div class="flex items-center gap-2.5 min-h-6">
-              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">
+            <div class="flex min-h-6 items-center gap-2.5">
+              <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
                 {t("story_url_placeholder")}
               </h3>
               <span
-                class="badge badge-xs font-semibold uppercase tracking-wider
+                class="badge badge-xs font-semibold tracking-wider uppercase
                   {urlNeeded ? 'badge-primary' : 'badge-outline'}"
               >
                 {urlNeeded ? t("required") : t("not_needed")}
@@ -263,16 +252,15 @@
             </div>
             <div class="col-start-2 {!urlNeeded ? 'pointer-events-none' : ''}">
               <div class="flex flex-col gap-1">
-                <label class="block font-semibold text-xs mb-1" for="wpd-url"
+                <label class="mb-1 block text-xs font-semibold" for="wpd-url"
                   >{t("wattpad_url")}</label
                 >
                 <div
-                  class="flex items-center gap-2 border rounded-lg px-3 bg-base-100 h-9 w-full
-                    transition-all focus-within:border-primary focus-within:ring-2
-                    focus-within:ring-primary/20 {invalidUrl ? 'border-error' : 'border-base-300'}"
+                  class="bg-base-100 focus-within:border-primary focus-within:ring-primary/20 flex h-9 w-full items-center gap-2 rounded-lg
+                    border px-3 transition-all
+                    focus-within:ring-2 {invalidUrl ? 'border-error' : 'border-base-300'}"
                 >
-                  <span class="text-base-content/40 inline-flex shrink-0"
-                    >{@html ICONS.linkSm}</span
+                  <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.linkSm}</span
                   >
                   <input
                     id="wpd-url"
@@ -281,18 +269,18 @@
                     autocomplete="off"
                     placeholder={t("story_url_placeholder")}
                     disabled={!urlNeeded}
-                    class="grow min-w-0 border-0 outline-none bg-transparent text-sm h-full p-0
-                      placeholder:text-base-content/30 disabled:cursor-not-allowed"
+                    class="placeholder:text-base-content/30 h-full min-w-0 grow border-0 bg-transparent p-0 text-sm
+                      outline-none disabled:cursor-not-allowed"
                     bind:value={() => inputUrl, setInputUrl}
                   />
                 </div>
               </div>
-              <div class="flex items-center justify-between gap-4 mt-1.5">
+              <div class="mt-1.5 flex items-center justify-between gap-4">
                 {#if invalidUrl}
                   <p class="text-error text-sm">
                     {t("invalid_url_refer")}<button
-                      class="text-sm font-bold underline cursor-pointer transition-colors
-                        hover:text-primary bg-transparent border-0 p-0"
+                      class="hover:text-primary cursor-pointer border-0 bg-transparent p-0
+                        text-sm font-bold underline transition-colors"
                       onclick={() => storyURLTutorialModal.showModal()}
                       data-umami-event="Part StoryURLTutorialModal Open"
                       type="button">{t("how_to_get_url")}</button
@@ -300,16 +288,16 @@
                   </p>
                 {:else}
                   <button
-                    class="text-sm font-bold underline cursor-pointer transition-colors
-                      hover:text-primary bg-transparent border-0 p-0"
+                    class="hover:text-primary cursor-pointer border-0 bg-transparent p-0
+                      text-sm font-bold underline transition-colors"
                     onclick={() => storyURLTutorialModal.showModal()}
                     data-umami-event="StoryURLTutorialModal Open"
                     type="button">{t("how_to_get_url")}</button
                   >
                 {/if}
                 <label
-                  class="inline-flex items-center gap-2 cursor-pointer select-none text-sm
-                    {!urlNeeded ? 'opacity-50 cursor-not-allowed' : ''}"
+                  class="inline-flex cursor-pointer items-center gap-2 text-sm select-none
+                    {!urlNeeded ? 'cursor-not-allowed opacity-50' : ''}"
                 >
                   <input
                     type="checkbox"
@@ -330,42 +318,40 @@
 
           <!-- 3 · ACCOUNT -->
           <div
-            class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 py-2 border-t border-base-200
+            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2
               transition-opacity duration-200 {!loginRequired ? 'opacity-50' : ''}"
             data-section="account"
             aria-disabled={!loginRequired}
           >
             <span
-              class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
-                border mt-0.5 {loginRequired
+              class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
+                text-xs font-bold {loginRequired
                 ? 'step-badge-active border-primary/30'
-                : 'bg-base-200 text-base-content/50 border-base-300'}"
-              >3</span
+                : 'bg-base-200 text-base-content/50 border-base-300'}">3</span
             >
-            <div class="flex items-center gap-2.5 min-h-6">
-              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">
+            <div class="flex min-h-6 items-center gap-2.5">
+              <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
                 {t("wattpad_account")}
               </h3>
               <span
-                class="badge badge-xs font-semibold uppercase tracking-wider
+                class="badge badge-xs font-semibold tracking-wider uppercase
                   {loginRequired ? 'badge-primary' : 'badge-outline'}"
               >
                 {loginRequired ? t("required") : t("not_needed")}
               </span>
             </div>
             <div class="col-start-2 {!loginRequired ? 'pointer-events-none' : ''}">
-              <div class="flex flex-col gap-2 min-w-0 w-full">
+              <div class="flex w-full min-w-0 flex-col gap-2">
                 <div class="flex flex-col gap-1">
-                  <label class="block font-semibold text-xs mb-1" for="wpd-username"
+                  <label class="mb-1 block text-xs font-semibold" for="wpd-username"
                     >{t("username")}</label
                   >
                   <div
-                    class="flex items-center gap-2 border border-base-300 rounded-lg px-3 bg-base-100
-                      h-9 w-full transition-all focus-within:border-primary focus-within:ring-2
-                      focus-within:ring-primary/20"
+                    class="border-base-300 bg-base-100 focus-within:border-primary focus-within:ring-primary/20 flex h-9 w-full items-center
+                      gap-2 rounded-lg border px-3 transition-all
+                      focus-within:ring-2"
                   >
-                    <span class="text-base-content/40 inline-flex shrink-0"
-                      >{@html ICONS.user}</span
+                    <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.user}</span
                     >
                     <input
                       id="wpd-username"
@@ -374,23 +360,22 @@
                       autocomplete="username"
                       placeholder="your.handle"
                       disabled={!loginRequired}
-                      class="grow min-w-0 border-0 outline-none bg-transparent text-sm h-full p-0
-                        placeholder:text-base-content/30 disabled:cursor-not-allowed"
+                      class="placeholder:text-base-content/30 h-full min-w-0 grow border-0 bg-transparent p-0 text-sm
+                        outline-none disabled:cursor-not-allowed"
                       bind:value={credentials.username}
                     />
                   </div>
                 </div>
                 <div class="flex flex-col gap-1">
-                  <label class="block font-semibold text-xs mb-1" for="wpd-password"
+                  <label class="mb-1 block text-xs font-semibold" for="wpd-password"
                     >{t("password")}</label
                   >
                   <div
-                    class="flex items-center gap-2 border border-base-300 rounded-lg px-3 bg-base-100
-                      h-9 w-full transition-all focus-within:border-primary focus-within:ring-2
-                      focus-within:ring-primary/20"
+                    class="border-base-300 bg-base-100 focus-within:border-primary focus-within:ring-primary/20 flex h-9 w-full items-center
+                      gap-2 rounded-lg border px-3 transition-all
+                      focus-within:ring-2"
                   >
-                    <span class="text-base-content/40 inline-flex shrink-0"
-                      >{@html ICONS.lock}</span
+                    <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.lock}</span
                     >
                     <input
                       id="wpd-password"
@@ -399,14 +384,14 @@
                       autocomplete="current-password"
                       placeholder={showPassword ? t("password") : "••••••••"}
                       disabled={!loginRequired}
-                      class="grow min-w-0 border-0 outline-none bg-transparent text-sm lowercase
-                        h-full p-0 placeholder:text-base-content/30 disabled:cursor-not-allowed"
+                      class="placeholder:text-base-content/30 h-full min-w-0 grow border-0 bg-transparent p-0
+                        text-sm lowercase outline-none disabled:cursor-not-allowed"
                       bind:value={credentials.password}
                     />
                     <button
                       type="button"
-                      class="text-base-content/40 inline-flex cursor-pointer bg-transparent border-0
-                        p-1 rounded hover:text-base-content hover:bg-base-200"
+                      class="text-base-content/40 hover:text-base-content hover:bg-base-200 inline-flex cursor-pointer
+                        rounded border-0 bg-transparent p-1"
                       data-toggle-pw
                       aria-label={showPassword ? "Hide password" : "Show password"}
                       tabindex={loginRequired ? undefined : "-1"}
@@ -423,11 +408,9 @@
           </div>
 
           <!-- Footer -->
-          <div
-            class="flex items-center justify-between gap-4 pt-3.5 border-t border-base-200 mt-1"
-          >
+          <div class="border-base-200 mt-1 flex items-center justify-between gap-4 border-t pt-3.5">
             <div class="flex flex-col gap-1.5">
-              <label class="inline-flex items-center gap-2 cursor-pointer select-none text-sm">
+              <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
                 <input
                   type="checkbox"
                   class="checkbox checkbox-xs checkbox-primary"
@@ -484,7 +467,8 @@
             <a
               href="https://buymeacoffee.com/theonlywayup"
               target="_blank"
-              class="btn btn-lg mt-10 bg-cyan-200 hover:bg-cyan-300 text-black coffee-btn">{t("buy_coffee")}</a
+              class="btn btn-lg coffee-btn mt-10 bg-cyan-200 text-black hover:bg-cyan-300"
+              >{t("buy_coffee")}</a
             >
             <button
               onclick={() => {
@@ -511,7 +495,8 @@
       <li>
         {t("modal_step2_before")}
         <span class="bg-base-200 p-1 font-mono"
-          >wattpad.com/<span class="rounded-sm bg-warning/30">story</span>/9341306-news-updates</span
+          >wattpad.com/<span class="bg-warning/30 rounded-sm">story</span
+          >/9341306-news-updates</span
         >{t("modal_step2_after")}
       </li>
       <li>

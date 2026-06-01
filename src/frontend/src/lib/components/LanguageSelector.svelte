@@ -5,7 +5,7 @@
 <div class="grid grid-cols-3 gap-2">
   {#each LOCALES as loc}
     <button
-      class="btn btn-sm h-auto min-h-[2rem] py-1 flex-wrap whitespace-normal text-center leading-tight {loc.code ===
+      class="btn btn-sm h-auto min-h-[2rem] flex-wrap py-1 text-center leading-tight whitespace-normal {loc.code ===
       i18n.locale
         ? 'btn-primary'
         : 'btn-outline'}"
