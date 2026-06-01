@@ -2,7 +2,6 @@
   import { t } from "$lib/i18n/index.svelte.js";
   import LanguageSelector from "$lib/components/LanguageSelector.svelte";
   import { browser } from "$app/environment";
-  import "$lib/styles.css";
 
   const ICONS = {
     link: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>`,
@@ -124,9 +123,6 @@
         setInputAsInvalid("");
       }
     }
-
-    // Originally, I was going to call the Wattpad API (wattpad.com/api/v3/stories/${story_id}), but Wattpad kept blocking those requests. I suspect it has something to do with the Origin header, I wasn't able to remove it.
-    // In the future, if this is considered, it would be cool if we could derive the Story ID from a pasted Part URL. Refer to @AaronBenDaniel's https://github.com/AaronBenDaniel/WattpadDownloader/blob/49b29b245188149f2d24c0b1c59e4c7f90f289a9/src/api/src/create_book.py#L156 (https://www.wattpad.com/api/v3/story_parts/{part_id}?fields=url).
   };
 </script>
 
@@ -136,7 +132,7 @@
       class="hero-content bg-base-100/50 flex-col rounded py-32 shadow-sm lg:flex-row-reverse lg:p-16 lg:items-start"
     >
       {#if !afterDownloadPage}
-        <div class="text-center lg:p-10 lg:text-left" style="max-width:32em">
+        <div class="text-center lg:p-10 lg:text-left max-w-lg">
           <h1
             class="bg-gradient-to-r from-red-700 via-yellow-600 to-pink-600 bg-clip-text text-5xl font-extrabold text-transparent"
           >
@@ -170,93 +166,114 @@
             {t("hero_description")}
           </p>
           <div class="pt-4">
-            <div
-              class="flex items-center justify-center lg:justify-start"
-              style="margin-bottom:0.5em"
-            >
+            <div class="flex items-center justify-center lg:justify-start mb-2">
               {@html ICONS.globe}
-              <span class="text-lg font-bold block mb-2" style="margin:0px; margin-left:0.25em"
-                >Site Language</span
-              >
+              <span class="text-lg font-bold ml-1">Site Language</span>
             </div>
             <LanguageSelector />
           </div>
         </div>
-        <form class="card" id="wpd-download-form">
+
+        <form
+          class="bg-base-100 border border-base-300 rounded-2xl px-5 pt-4 pb-4 shadow-xl"
+          id="wpd-download-form"
+        >
           <input type="hidden" name="path" />
 
           <!-- 1 · SOURCE -->
-          <div class="section" data-section="source">
-            <span class="num">1</span>
-            <div class="head">
-              <h3>{t("source")}</h3>
+          <div class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 pt-0.5" data-section="source">
+            <span
+              class="inline-flex items-center justify-center size-[22px] rounded-md bg-primary/25 text-amber-800 font-bold text-xs border border-primary/30 mt-0.5"
+              >1</span
+            >
+            <div class="flex items-center gap-2.5 min-h-6">
+              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">{t("source")}</h3>
             </div>
-            <div class="body">
-              <div class="tiles" role="radiogroup" aria-label="Download source">
-                <button
-                  type="button"
-                  class="tile"
-                  role="radio"
-                  aria-pressed={source == "url"}
-                  aria-checked={source == "url"}
-                  data-path="story"
-                  data-tile
-                  onclick={() => (source = "url")}
-                >
-                  <span class="icon">{@html ICONS.link}</span>
-                  <span class="label">{t("url")}</span>
-                  <span class="desc">{t("url_desc")}</span>
-                </button>
-                <button
-                  type="button"
-                  class="tile"
-                  role="radio"
-                  aria-pressed={source == "library"}
-                  aria-checked={source == "library"}
-                  data-path="story"
-                  data-tile
-                  onclick={() => (source = "library")}
-                >
-                  <span class="icon">{@html ICONS.library}</span>
-                  <span class="label">{t("library")}</span>
-                  <span class="desc">{t("library_desc")}</span>
-                </button>
-                <button
-                  type="button"
-                  class="tile"
-                  role="radio"
-                  aria-pressed={source == "archive"}
-                  aria-checked={source == "archive"}
-                  data-path="story"
-                  data-tile
-                  onclick={() => (source = "archive")}
-                >
-                  <span class="icon">{@html ICONS.archive}</span>
-                  <span class="label">{t("archive")}</span>
-                  <span class="desc">{t("archive_desc")}</span>
-                </button>
+            <div class="col-start-2">
+              <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Download source">
+                {#each [
+                  { key: "url", icon: ICONS.link, labelKey: "url", descKey: "url_desc" },
+                  {
+                    key: "library",
+                    icon: ICONS.library,
+                    labelKey: "library",
+                    descKey: "library_desc"
+                  },
+                  {
+                    key: "archive",
+                    icon: ICONS.archive,
+                    labelKey: "archive",
+                    descKey: "archive_desc"
+                  }
+                ] as tile}
+                  <button
+                    type="button"
+                    class="flex-1 basis-28 min-w-0 grid grid-cols-[auto_1fr] items-center gap-x-2.5 gap-y-px
+                      p-2.5 rounded-lg border cursor-pointer text-left transition-all duration-150
+                      focus-visible:outline-2 focus-visible:outline-primary focus-visible:outline-offset-2
+                      {source === tile.key
+                      ? 'border-primary bg-primary/5 ring-1 ring-inset ring-primary'
+                      : 'bg-base-200/30 border-base-300 hover:border-base-content/20 hover:bg-base-100'}"
+                    role="radio"
+                    aria-checked={source === tile.key}
+                    data-tile
+                    onclick={() => (source = tile.key)}
+                  >
+                    <span
+                      class="row-start-1 col-start-1 size-5 inline-flex items-center justify-center
+                        {source === tile.key ? 'text-primary' : 'text-base-content/60'}"
+                      >{@html tile.icon}</span
+                    >
+                    <span class="row-start-1 col-start-2 font-semibold text-sm"
+                      >{t(tile.labelKey)}</span
+                    >
+                    <span class="row-start-2 col-span-full text-xs text-base-content/50 leading-snug"
+                      >{t(tile.descKey)}</span
+                    >
+                  </button>
+                {/each}
               </div>
             </div>
           </div>
 
           <!-- 2 · STORY URL -->
           <div
-            class="section{urlNeeded ? '' : ' is-disabled'}"
+            class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 py-2 border-t border-base-200
+              transition-opacity duration-200 {!urlNeeded ? 'opacity-50' : ''}"
             data-section="url"
             aria-disabled={!urlNeeded}
           >
-            <span class="num">2</span>
-            <div class="head">
-              <h3>{t("story_url_placeholder")}</h3>
-              <span class="pill {urlNeeded ? 'required' : 'optional'}" data-pill="url">
+            <span
+              class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
+                border mt-0.5 {urlNeeded
+                ? 'bg-primary/25 text-amber-800 border-primary/30'
+                : 'bg-base-200 text-base-content/50 border-base-300'}"
+              >2</span
+            >
+            <div class="flex items-center gap-2.5 min-h-6">
+              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">
+                {t("story_url_placeholder")}
+              </h3>
+              <span
+                class="badge badge-xs font-semibold uppercase tracking-wider
+                  {urlNeeded ? 'badge-primary' : 'badge-outline'}"
+              >
                 {urlNeeded ? t("required") : t("not_needed")}
               </span>
             </div>
-            <div class="body">
-              <div class="field-row">
-                <label class="field-label" for="wpd-url">{t("wattpad_url")}</label>
-                <div class="input">
-                  <span class="lead">{@html ICONS.linkSm}</span>
+            <div class="col-start-2 {!urlNeeded ? 'pointer-events-none' : ''}">
+              <div class="flex flex-col gap-1">
+                <label class="block font-semibold text-xs mb-1" for="wpd-url"
+                  >{t("wattpad_url")}</label
+                >
+                <div
+                  class="flex items-center gap-2 border rounded-lg px-3 bg-base-100 h-9 w-full
+                    transition-all focus-within:border-primary focus-within:ring-2
+                    focus-within:ring-primary/20 {invalidUrl ? 'border-error' : 'border-base-300'}"
+                >
+                  <span class="text-base-content/40 inline-flex shrink-0"
+                    >{@html ICONS.linkSm}</span
+                  >
                   <input
                     id="wpd-url"
                     name="story_url"
@@ -264,33 +281,39 @@
                     autocomplete="off"
                     placeholder={t("story_url_placeholder")}
                     disabled={!urlNeeded}
-                    class:input-warning={invalidUrl}
+                    class="grow min-w-0 border-0 outline-none bg-transparent text-sm h-full p-0
+                      placeholder:text-base-content/30 disabled:cursor-not-allowed"
                     bind:value={() => inputUrl, setInputUrl}
                   />
                 </div>
               </div>
-              <div class="url-helper-row">
+              <div class="flex items-center justify-between gap-4 mt-1.5">
                 {#if invalidUrl}
-                  <p class="text-red-500">
+                  <p class="text-error text-sm">
                     {t("invalid_url_refer")}<button
-                      class="field-help"
+                      class="text-sm font-bold underline cursor-pointer transition-colors
+                        hover:text-primary bg-transparent border-0 p-0"
                       onclick={() => storyURLTutorialModal.showModal()}
                       data-umami-event="Part StoryURLTutorialModal Open"
-                      type="button"><b><u>{t("how_to_get_url")}</u></b></button
+                      type="button">{t("how_to_get_url")}</button
                     >{t("invalid_url_refer_end")}
                   </p>
                 {:else}
                   <button
-                    class="field-help"
+                    class="text-sm font-bold underline cursor-pointer transition-colors
+                      hover:text-primary bg-transparent border-0 p-0"
                     onclick={() => storyURLTutorialModal.showModal()}
                     data-umami-event="StoryURLTutorialModal Open"
-                    type="button"
-                    ><b><u>{t("how_to_get_url")}</u></b>
-                  </button>
+                    type="button">{t("how_to_get_url")}</button
+                  >
                 {/if}
-                <label class="check{urlNeeded ? '' : ' is-disabled'}">
+                <label
+                  class="inline-flex items-center gap-2 cursor-pointer select-none text-sm
+                    {!urlNeeded ? 'opacity-50 cursor-not-allowed' : ''}"
+                >
                   <input
                     type="checkbox"
+                    class="checkbox checkbox-xs checkbox-primary"
                     name="paid_story"
                     data-paid
                     disabled={!urlNeeded}
@@ -298,7 +321,7 @@
                   />
                   <span
                     ><strong>{t("paid_story_label")}</strong>
-                    <span class="muted">{t("paid_story_label_end")}</span></span
+                    <span class="text-base-content/50">{t("paid_story_label_end")}</span></span
                   >
                 </label>
               </div>
@@ -307,23 +330,43 @@
 
           <!-- 3 · ACCOUNT -->
           <div
-            class="section{loginRequired ? '' : ' is-disabled'}"
+            class="grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 py-2 border-t border-base-200
+              transition-opacity duration-200 {!loginRequired ? 'opacity-50' : ''}"
             data-section="account"
             aria-disabled={!loginRequired}
           >
-            <span class="num">3</span>
-            <div class="head">
-              <h3>{t("wattpad_account")}</h3>
-              <span class="pill {loginRequired ? 'required' : 'optional'}" data-pill="account">
+            <span
+              class="inline-flex items-center justify-center size-[22px] rounded-md font-bold text-xs
+                border mt-0.5 {loginRequired
+                ? 'bg-primary/25 text-amber-800 border-primary/30'
+                : 'bg-base-200 text-base-content/50 border-base-300'}"
+              >3</span
+            >
+            <div class="flex items-center gap-2.5 min-h-6">
+              <h3 class="m-0 font-bold text-xs tracking-[0.14em] uppercase">
+                {t("wattpad_account")}
+              </h3>
+              <span
+                class="badge badge-xs font-semibold uppercase tracking-wider
+                  {loginRequired ? 'badge-primary' : 'badge-outline'}"
+              >
                 {loginRequired ? t("required") : t("not_needed")}
               </span>
             </div>
-            <div class="body">
-              <div class="login-stack">
-                <div class="field-row">
-                  <label class="field-label" for="wpd-username">{t("username")}</label>
-                  <div class="input">
-                    <span class="lead">{@html ICONS.user}</span>
+            <div class="col-start-2 {!loginRequired ? 'pointer-events-none' : ''}">
+              <div class="flex flex-col gap-2 min-w-0 w-full">
+                <div class="flex flex-col gap-1">
+                  <label class="block font-semibold text-xs mb-1" for="wpd-username"
+                    >{t("username")}</label
+                  >
+                  <div
+                    class="flex items-center gap-2 border border-base-300 rounded-lg px-3 bg-base-100
+                      h-9 w-full transition-all focus-within:border-primary focus-within:ring-2
+                      focus-within:ring-primary/20"
+                  >
+                    <span class="text-base-content/40 inline-flex shrink-0"
+                      >{@html ICONS.user}</span
+                    >
                     <input
                       id="wpd-username"
                       name="username"
@@ -331,14 +374,24 @@
                       autocomplete="username"
                       placeholder="your.handle"
                       disabled={!loginRequired}
+                      class="grow min-w-0 border-0 outline-none bg-transparent text-sm h-full p-0
+                        placeholder:text-base-content/30 disabled:cursor-not-allowed"
                       bind:value={credentials.username}
                     />
                   </div>
                 </div>
-                <div class="field-row">
-                  <label class="field-label" for="wpd-password">{t("password")}</label>
-                  <div class="input">
-                    <span class="lead">{@html ICONS.lock}</span>
+                <div class="flex flex-col gap-1">
+                  <label class="block font-semibold text-xs mb-1" for="wpd-password"
+                    >{t("password")}</label
+                  >
+                  <div
+                    class="flex items-center gap-2 border border-base-300 rounded-lg px-3 bg-base-100
+                      h-9 w-full transition-all focus-within:border-primary focus-within:ring-2
+                      focus-within:ring-primary/20"
+                  >
+                    <span class="text-base-content/40 inline-flex shrink-0"
+                      >{@html ICONS.lock}</span
+                    >
                     <input
                       id="wpd-password"
                       name="password"
@@ -346,12 +399,14 @@
                       autocomplete="current-password"
                       placeholder={showPassword ? t("password") : "••••••••"}
                       disabled={!loginRequired}
+                      class="grow min-w-0 border-0 outline-none bg-transparent text-sm lowercase
+                        h-full p-0 placeholder:text-base-content/30 disabled:cursor-not-allowed"
                       bind:value={credentials.password}
-                      style="text-transform:lowercase"
                     />
                     <button
                       type="button"
-                      class="trail"
+                      class="text-base-content/40 inline-flex cursor-pointer bg-transparent border-0
+                        p-1 rounded hover:text-base-content hover:bg-base-200"
                       data-toggle-pw
                       aria-label={showPassword ? "Hide password" : "Show password"}
                       tabindex={loginRequired ? undefined : "-1"}
@@ -368,24 +423,27 @@
           </div>
 
           <!-- Footer -->
-          <div class="card-foot">
-            <div style="display:flex;flex-direction:column;gap:6px">
-              <label class="check">
+          <div
+            class="flex items-center justify-between gap-4 pt-3.5 border-t border-base-200 mt-1"
+          >
+            <div class="flex flex-col gap-1.5">
+              <label class="inline-flex items-center gap-2 cursor-pointer select-none text-sm">
                 <input
                   type="checkbox"
+                  class="checkbox checkbox-xs checkbox-primary"
                   name="include_images"
                   data-include-images
                   bind:checked={downloadImages}
                 />
                 <span
                   ><strong>{t("include_images_bold")}</strong>
-                  <span class="muted">{t("include_images")}</span></span
+                  <span class="text-base-content/50">{t("include_images")}</span></span
                 >
               </label>
             </div>
             <button
               type="submit"
-              class="btn"
+              class="btn btn-primary"
               id="wpd-submit"
               name="submit"
               disabled={downloadButtonDisabled}
