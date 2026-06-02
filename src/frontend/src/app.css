@@ -1,51 +1,57 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @plugin "daisyui" {
-    themes: bumblebee --default, abyss --prefersdark;
+  themes:
+    bumblebee --default,
+    abyss --prefersdark;
 }
 
 *,
 *::before,
 *::after {
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
 [data-theme="abyss"] {
-    --color-primary: oklch(85% .199 91.936);
-    --color-primary-content: oklch(42% .095 57.708);
-    --color-secondary: oklch(75% .183 55.934);
-    --color-secondary-content: oklch(40% .123 38.172);
-    --color-base-100: oklch(22% 0 0);
-    --color-base-200: oklch(18% 0 0);
-    --color-base-300: oklch(14% 0 0);
-    --color-base-content: oklch(90% 0 0);
-    --color-neutral: oklch(30% 0 0);
-    --color-neutral-content: oklch(90% 0 0);
-    --radius-selector: 1rem;
-    --radius-field: .5rem;
-    --radius-box: 1rem;
+  --color-primary: oklch(85% 0.199 91.936);
+  --color-primary-content: oklch(42% 0.095 57.708);
+  --color-secondary: oklch(75% 0.183 55.934);
+  --color-secondary-content: oklch(40% 0.123 38.172);
+  --color-base-100: oklch(22% 0 0);
+  --color-base-200: oklch(18% 0 0);
+  --color-base-300: oklch(14% 0 0);
+  --color-base-content: oklch(90% 0 0);
+  --color-neutral: oklch(30% 0 0);
+  --color-neutral-content: oklch(90% 0 0);
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
 }
 
 .step-badge-active {
-    background-color: oklch(85% .199 91.936 / 25%);
-    color: #92400e;
+  background-color: oklch(85% 0.199 91.936 / 25%);
+  color: #92400e;
 }
 
 [data-theme="abyss"] .step-badge-active {
-    background-color: oklch(14% 0 0);
-    color: oklch(85% .199 91.936);
+  background-color: oklch(14% 0 0);
+  color: oklch(85% 0.199 91.936);
 }
 
-[data-theme="abyss"] .donator-alert {
-    background-color: oklch(45% .07 155);
-    color: #e0e0e0;
+[data-theme="abyss"] .discord-alert {
+  background-color: oklch(35% 0.1 280);
+  color: #e0e0e0;
 }
 
-[data-theme="abyss"] .coffee-btn {
-    background-color: oklch(40% .1 250);
-    color: #e0e0e0;
+[data-theme="abyss"] .discord-btn {
+  background-color: oklch(40% 0.15 280);
+  color: #e0e0e0;
 }
 
-[data-theme="abyss"] .coffee-btn:hover {
-    background-color: oklch(45% .12 250);
+[data-theme="abyss"] .discord-btn:hover {
+  background-color: oklch(45% 0.17 280);
 }

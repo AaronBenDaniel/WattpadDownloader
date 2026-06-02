@@ -140,7 +140,7 @@
           </h1>
           <div
             role="alert"
-            class="alert donator-alert mt-10 max-w-md bg-green-200 break-words text-black"
+            class="alert discord-alert mt-10 max-w-md bg-indigo-100 break-words text-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -157,11 +157,11 @@
             </svg>
             <div>
               <p>
-                {t("donators_headline")}
-                <span class="font-semibold">{t("donators_highlight")}</span>
+                {t("discord_cta")}
+                <span class="font-semibold">{t("discord_cta_highlight")}</span>
               </p>
-              <a href="https://buymeacoffee.com/theonlywayup" class="link" target="_blank"
-                >{t("donate_now")}</a
+              <a href="https://discord.gg/P9RHC4KCwd" class="link" target="_blank"
+                >{t("discord_join_now")}</a
               >
             </div>
           </div>
@@ -446,14 +446,6 @@
             >
           </h1>
           <div class="space-y-2 py-4">
-            <p class="text-2xl">
-              {t("star_before")}<a
-                href="https://github.com/TheOnlyWayUp/WattpadDownloader"
-                target="_blank"
-                class="link"
-                data-umami-event="Star">{t("star_link")}</a
-              >{t("star_after")}
-            </p>
             <p class="pt-2 text-lg">
               {t("discord_before")}<a
                 href="https://discord.gg/P9RHC4KCwd"
@@ -465,10 +457,19 @@
           </div>
           <div class="grid grid-rows-2 justify-center gap-y-10">
             <a
-              href="https://buymeacoffee.com/theonlywayup"
+              href="https://discord.gg/P9RHC4KCwd"
               target="_blank"
-              class="btn btn-lg coffee-btn mt-10 bg-cyan-200 text-black hover:bg-cyan-300"
-              >{t("buy_coffee")}</a
+              class="btn btn-lg discord-btn mt-10 bg-indigo-500 text-white hover:bg-indigo-600"
+              ><svg
+                width="20"
+                height="16"
+                viewBox="0 0 127.14 96.36"
+                fill="currentColor"
+                aria-hidden="true"
+                ><path
+                  d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0 105.89 105.89 0 0 0 19.39 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2.03a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2.03a68.68 68.68 0 0 1-10.87 5.19 77.3 77.3 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53.05c0-6.94 5.04-12.67 11.45-12.67S53.99 46.06 53.9 53.05c0 6.94-5.11 12.64-11.45 12.64Zm42.24 0C78.41 65.69 73.25 60 73.25 53.05c0-6.94 5.04-12.67 11.44-12.67s11.51 5.68 11.44 12.67c0 6.94-5.09 12.64-11.44 12.64Z"
+                /></svg
+              >{t("join_discord")}</a
             >
             <button
               onclick={() => {

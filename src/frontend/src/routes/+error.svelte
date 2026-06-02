@@ -16,10 +16,7 @@
 
   <footer class="footer footer-center bg-base-300 text-base-content fixed bottom-0 p-4">
     <aside class="text-2xl">
-      <p>
-        <a href="https://github.com/TheOnlyWayUp" class="underline" target="_blank">TheOnlyWayUp</a>
-        © 2026
-      </p>
+      <p>WPDownloader © 2026</p>
     </aside>
   </footer>
 </div>

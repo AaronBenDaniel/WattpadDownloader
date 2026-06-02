@@ -35,33 +35,12 @@
 
 <footer class="footer footer-center bg-base-300 text-base-content fixed bottom-0 p-4">
   <aside>
-    <div class="flex w-full max-w-lg flex-row">
-      <a
-        href="https://buymeacoffee.com/theonlywayup"
-        target="_blank"
-        class="link"
-        data-umami-event="Footer Donate">Buy me a Coffee!</a
-      >
-      <a
-        href="https://rambhat.la"
-        target="_blank"
-        class="link flex-1"
-        data-umami-event="Footer AboutMe">About Me</a
-      >
-      <a
-        href="https://discord.gg/P9RHC4KCwd"
-        target="_blank"
-        class="link"
-        data-umami-event="Footer Discord">Discord</a
-      >
-    </div>
-    <p>
-      Copyright © 2026 - All rights reserved by <a
-        href="https://rambhat.la"
-        class="link"
-        target="_blank"
-        data-umami-event="CopyrightHolder">Dhanush R</a
-      >
-    </p>
+    <a
+      href="https://discord.gg/P9RHC4KCwd"
+      target="_blank"
+      class="link"
+      data-umami-event="Footer Discord">{t("footer_discord")}</a
+    >
+    <p>{t("footer_copyright")}</p>
   </aside>
 </footer>
