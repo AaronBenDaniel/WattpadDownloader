@@ -1,0 +1,3 @@
+[submodule "src/api/lib/epublib"]
+	path = src/api/lib/epublib
+	url = ssh://git@github.com/AaronBenDaniel/epublib.git

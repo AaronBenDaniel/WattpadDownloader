@@ -14,6 +14,13 @@ docker run -d -p 5042:5042 wp_downloader
 
 **Prerequisites**: Python 3.13+, Node.js 20+, npm, [uv](https://astral.sh/uv) (`curl -LsSf https://astral.sh/uv/install.sh | sh`).
 
+**Clone with submodules** — the `epublib` dependency lives in a git submodule at `src/api/lib/epublib/`:
+```bash
+git clone --recurse-submodules <repo-url>
+# or, if already cloned:
+git submodule update --init
+```
+
 PDF generation requires system libraries:
 ```bash
 # Debian/Ubuntu

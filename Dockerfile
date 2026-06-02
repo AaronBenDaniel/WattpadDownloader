@@ -29,6 +29,7 @@ WORKDIR /app
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 COPY src/api/pyproject.toml /app
+COPY src/api/lib/epublib /app/lib/epublib
 RUN uv sync && uv cache clean
 COPY src/api/ /app
 COPY --from=0 /build/build /app/src/build
@@ -39,4 +40,4 @@ WORKDIR /app/src
 
 EXPOSE 5042
 
-CMD [ "uv", "run", "main.py"]
+CMD [ "uv", "run", "--no-sync", "main.py"]
