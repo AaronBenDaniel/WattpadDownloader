@@ -16,11 +16,22 @@
     }
   }
 
+  let initialized = false;
+
   function apply(isDark) {
     if (!browser) return;
     const theme = isDark ? DARK : LIGHT;
-    document.documentElement.setAttribute("data-theme", theme);
     localStorage.setItem(STORAGE_KEY, theme);
+    if (!initialized) {
+      document.documentElement.setAttribute("data-theme", theme);
+      initialized = true;
+      return;
+    }
+    const el = document.documentElement;
+    el.classList.add("theme-transitioning");
+    void el.offsetHeight;
+    el.setAttribute("data-theme", theme);
+    setTimeout(() => el.classList.remove("theme-transitioning"), 350);
   }
 
   $effect(() => {
