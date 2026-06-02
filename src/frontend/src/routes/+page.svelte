@@ -3,18 +3,17 @@
   import LanguageSelector from "$lib/components/LanguageSelector.svelte";
   import { browser } from "$app/environment";
 
-  const ICONS = {
-    link: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>`,
-    linkSm: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>`,
-    library: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="4" height="16" rx="1"/><rect x="9" y="4" width="4" height="16" rx="1"/><path d="M16 5l4 1-3 14-4-1z"/></svg>`,
-    archive: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"/><path d="M10 12h4"/></svg>`,
-    user: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6"/></svg>`,
-    lock: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>`,
-    eye: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>`,
-    eyeOff: `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 6.1A10.7 10.7 0 0 1 12 6c6.5 0 10 7 10 7a17.7 17.7 0 0 1-3.2 4"/><path d="M6.7 6.7C3.7 8.5 2 12 2 12s3.5 7 10 7c1.7 0 3.3-.4 4.6-1"/><path d="M9.5 9.6a3 3 0 0 0 4.2 4.2"/></svg>`,
-    download: `<svg style="display: inline;vertical-align:center" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v12"/><path d="M7 11l5 5 5-5"/><path d="M5 20h14"/></svg>`,
-    globe: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a14 14 0 0 1 0 18"/><path d="M12 3a14 14 0 0 0 0 18"/></svg>`
-  };
+  import LinkIcon from "$lib/icons/LinkIcon.svelte";
+  import LibraryIcon from "$lib/icons/LibraryIcon.svelte";
+  import ArchiveIcon from "$lib/icons/ArchiveIcon.svelte";
+  import UserIcon from "$lib/icons/UserIcon.svelte";
+  import LockIcon from "$lib/icons/LockIcon.svelte";
+  import EyeIcon from "$lib/icons/EyeIcon.svelte";
+  import EyeOffIcon from "$lib/icons/EyeOffIcon.svelte";
+  import DownloadIcon from "$lib/icons/DownloadIcon.svelte";
+  import GlobeIcon from "$lib/icons/GlobeIcon.svelte";
+  import InfoIcon from "$lib/icons/InfoIcon.svelte";
+  import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
 
   let inputUrl = $state("");
   let storyURLTutorialModal = $state();
@@ -142,19 +141,7 @@
             role="alert"
             class="alert discord-alert mt-10 max-w-md bg-indigo-100 break-words text-black"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              class="h-6 w-6 shrink-0 stroke-current"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              ></path>
-            </svg>
+            <InfoIcon />
             <div>
               <p>
                 {t("discord_cta")}
@@ -170,7 +157,7 @@
           </p>
           <div class="pt-4">
             <div class="mb-2 flex items-center justify-center lg:justify-start">
-              {@html ICONS.globe}
+              <GlobeIcon />
               <span class="ml-1 text-lg font-bold">Site Language</span>
             </div>
             <LanguageSelector />
@@ -194,7 +181,8 @@
             </div>
             <div class="col-start-2">
               <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Download source">
-                {#each [{ key: "url", icon: ICONS.link, labelKey: "url", descKey: "url_desc" }, { key: "library", icon: ICONS.library, labelKey: "library", descKey: "library_desc" }, { key: "archive", icon: ICONS.archive, labelKey: "archive", descKey: "archive_desc" }] as tile}
+                {#each [{ key: "url", icon: LinkIcon, labelKey: "url", descKey: "url_desc" }, { key: "library", icon: LibraryIcon, labelKey: "library", descKey: "library_desc" }, { key: "archive", icon: ArchiveIcon, labelKey: "archive", descKey: "archive_desc" }] as tile}
+                  {@const Icon = tile.icon}
                   <button
                     type="button"
                     class="focus-visible:outline-primary grid min-w-0 flex-1 basis-28 cursor-pointer grid-cols-[auto_1fr] items-center
@@ -211,7 +199,7 @@
                     <span
                       class="col-start-1 row-start-1 inline-flex size-5 items-center justify-center
                         {source === tile.key ? 'text-primary' : 'text-base-content/60'}"
-                      >{@html tile.icon}</span
+                      ><Icon /></span
                     >
                     <span class="col-start-2 row-start-1 text-sm font-semibold"
                       >{t(tile.labelKey)}</span
@@ -260,7 +248,8 @@
                     border px-3 transition-all
                     focus-within:ring-2 {invalidUrl ? 'border-error' : 'border-base-300'}"
                 >
-                  <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.linkSm}</span
+                  <span class="text-base-content/40 inline-flex shrink-0"
+                    ><LinkIcon size={16} /></span
                   >
                   <input
                     id="wpd-url"
@@ -351,8 +340,7 @@
                       gap-2 rounded-lg border px-3 transition-all
                       focus-within:ring-2"
                   >
-                    <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.user}</span
-                    >
+                    <span class="text-base-content/40 inline-flex shrink-0"><UserIcon /></span>
                     <input
                       id="wpd-username"
                       name="username"
@@ -375,8 +363,7 @@
                       gap-2 rounded-lg border px-3 transition-all
                       focus-within:ring-2"
                   >
-                    <span class="text-base-content/40 inline-flex shrink-0">{@html ICONS.lock}</span
-                    >
+                    <span class="text-base-content/40 inline-flex shrink-0"><LockIcon /></span>
                     <input
                       id="wpd-password"
                       name="password"
@@ -399,7 +386,7 @@
                         showPassword = !showPassword;
                       }}
                     >
-                      {@html showPassword ? ICONS.eyeOff : ICONS.eye}
+                      {#if showPassword}<EyeOffIcon />{:else}<EyeIcon />{/if}
                     </button>
                   </div>
                 </div>
@@ -431,7 +418,7 @@
               name="submit"
               disabled={downloadButtonDisabled}
               ><a href={url} onclick={() => (afterDownloadPage = true)}>
-                {@html ICONS.download}<span data-cta>{t("download")}</span></a
+                <DownloadIcon /><span data-cta>{t("download")}</span></a
               >
             </button>
           </div>
@@ -460,16 +447,7 @@
               href="https://discord.gg/P9RHC4KCwd"
               target="_blank"
               class="btn btn-lg discord-btn mt-10 bg-indigo-500 text-white hover:bg-indigo-600"
-              ><svg
-                width="20"
-                height="16"
-                viewBox="0 0 127.14 96.36"
-                fill="currentColor"
-                aria-hidden="true"
-                ><path
-                  d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0 105.89 105.89 0 0 0 19.39 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2.03a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2.03a68.68 68.68 0 0 1-10.87 5.19 77.3 77.3 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53.05c0-6.94 5.04-12.67 11.45-12.67S53.99 46.06 53.9 53.05c0 6.94-5.11 12.64-11.45 12.64Zm42.24 0C78.41 65.69 73.25 60 73.25 53.05c0-6.94 5.04-12.67 11.44-12.67s11.51 5.68 11.44 12.67c0 6.94-5.09 12.64-11.44 12.64Z"
-                /></svg
-              >{t("join_discord")}</a
+              ><DiscordIcon />{t("join_discord")}</a
             >
             <button
               onclick={() => {
