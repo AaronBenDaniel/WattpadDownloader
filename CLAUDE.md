@@ -142,6 +142,10 @@ curl -X DELETE http://localhost:5042/admin/users/{uuid} -H "X-API-Key: $KEY"
 
 **User-facing endpoints:**
 ```bash
+# Verify server identity (no auth required) and optionally validate API key
+curl http://localhost:5042/server/verify                    # => {"server": "WattpadDownloader"}
+curl http://localhost:5042/server/verify -H "X-API-Key: $KEY"  # => {"server": "WattpadDownloader", "authenticated": true}
+
 # Check active features (returns {"features": [...]}, cached 5 min)
 curl "http://localhost:5042/user/features?user_id={uuid}"
 

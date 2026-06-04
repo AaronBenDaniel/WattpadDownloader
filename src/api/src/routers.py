@@ -132,6 +132,16 @@ async def delete_user(
 user_router = APIRouter()
 
 
+@user_router.get("/server/verify")
+async def verify_server(x_api_key: str | None = Header(None)):
+    response = {"server": "WattpadDownloader"}
+    if x_api_key is not None:
+        if x_api_key != config.ADMIN_API_KEY:
+            raise HTTPException(401, "Invalid API key")
+        response["authenticated"] = True
+    return response
+
+
 @user_router.get("/user/features")
 async def get_features(
     user_id: str | None = None,
