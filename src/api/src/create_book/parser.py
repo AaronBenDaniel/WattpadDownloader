@@ -81,7 +81,7 @@ async def fetch_tree_images(tree: BeautifulSoup):
     image_urls = []
     for img in tree.find_all("img"):
         parsed = urlparse(img["src"])
-        if parsed.scheme and parsed.netloc: # Test if valid URL
+        if parsed.scheme and parsed.netloc:  # Test if valid URL
             image_urls.append(img["src"])
 
     images = []

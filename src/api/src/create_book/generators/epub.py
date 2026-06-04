@@ -32,7 +32,7 @@ class EPUBGenerator(AbstractGenerator):
         self.book.add_metadata("DC", "description", self.story["description"])
         self.book.add_metadata("DC", "date", self.story["createDate"])
         self.book.set_modified(self.story["modifyDate"])
-        self.book.set_language("en")#self.story["language"]["name"])
+        self.book.set_language("en")  # self.story["language"]["name"])
 
         for tag in self.story["tags"]:
             self.book.add_metadata("DC", "subject", tag)

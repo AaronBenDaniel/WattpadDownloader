@@ -8,7 +8,7 @@ from .create_book import (
     fetch_story_from_partId,
     fetch_library,
     fetch_list,
-    fetch_username
+    fetch_username,
 )
 from .exceptions import PartNotFoundError, StoryNotFoundError, WattpadError
 from .generators import EPUBGenerator, PDFGenerator
