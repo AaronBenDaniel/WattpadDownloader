@@ -500,11 +500,12 @@
             </div>
 
             <div class="flex items-center justify-between gap-4">
-              {#if getExternalIdentifier()}
+              {#if getUserId()}
                 <div class="flex items-center gap-2 text-xs">
                   <span class="text-base-content/60"
-                    >{t("signed_in_as")}
-                    <span class="font-semibold">{getExternalIdentifier()}</span></span
+                    >{#if getExternalIdentifier()}{t("signed_in_as")}
+                      <span class="font-semibold">{getExternalIdentifier()}</span
+                      >{:else}{t("signed_in")}{/if}</span
                   >
                   <button
                     type="button"
