@@ -15,7 +15,7 @@ from create_book.vars import cache
 DISCORD_API = "https://discord.com/api/v10"
 COOKIE_NAME = "wpd_session"
 STATE_COOKIE_NAME = "wpd_oauth_state"
-MEMBERSHIP_CACHE_TTL = 300
+MEMBERSHIP_CACHE_TTL = 1800
 
 
 class AuthConfig(BaseSettings):
@@ -23,7 +23,7 @@ class AuthConfig(BaseSettings):
     DISCORD_CLIENT_SECRET: str = ""
     DISCORD_BOT_TOKEN: str = ""
     DISCORD_GUILD_ID: str = ""
-    DISCORD_UNRESTRICTED_PDF_ROLE_ID: str = ""
+    DISCORD_UNRESTRICTED_ACCESS_ROLE_ID: str = ""
     DISCORD_REDIRECT_URI: str = "http://localhost:5042/auth/discord/callback"
     JWT_SECRET: str = ""
     JWT_EXPIRY_SECONDS: int = 604800
@@ -98,8 +98,8 @@ async def check_guild_membership(discord_id: str) -> bool:
     return await fetch_guild_member(discord_id) is not None
 
 
-def has_unrestricted_pdf(member: dict) -> bool:
-    role_id = auth_config.DISCORD_UNRESTRICTED_PDF_ROLE_ID
+def has_unrestricted_access(member: dict) -> bool:
+    role_id = auth_config.DISCORD_UNRESTRICTED_ACCESS_ROLE_ID
     if not role_id:
         return False
     return role_id in member.get("roles", [])
@@ -112,7 +112,7 @@ async def require_pdf_access(request: Request, is_bulk: bool):
     member = await fetch_guild_member(user["id"])
     if not member:
         raise HTTPException(403, "Guild membership required for PDF downloads")
-    if is_bulk and not has_unrestricted_pdf(member):
+    if is_bulk and not has_unrestricted_access(member):
         raise HTTPException(403, "Required role missing for bulk PDF downloads")
 
 
@@ -196,7 +196,7 @@ async def auth_me(request: Request):
         "logged_in": True,
         "username": user["username"],
         "has_pdf_access": member is not None,
-        "has_unrestricted_pdf": has_unrestricted_pdf(member) if member else False,
+        "has_unrestricted_access": has_unrestricted_access(member) if member else False,
     }
 
     if _should_refresh(user):

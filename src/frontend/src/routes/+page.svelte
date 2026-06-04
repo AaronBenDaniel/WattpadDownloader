@@ -18,7 +18,7 @@
   import FileTextIcon from "$lib/icons/FileTextIcon.svelte";
 
   let hasPdfAccess = $state(false);
-  let hasUnrestrictedPdf = $state(false);
+  let hasUnrestrictedAccess = $state(false);
   let discordUser = $state(null);
 
   let inputUrl = $state("");
@@ -42,7 +42,7 @@
   });
 
   let isBulkDownload = $derived(source !== "url" || mode === "list");
-  let pdfAllowed = $derived(hasPdfAccess && (!isBulkDownload || hasUnrestrictedPdf));
+  let pdfAllowed = $derived(hasPdfAccess && (!isBulkDownload || hasUnrestrictedAccess));
 
   $effect(() => {
     if (downloadAsPdf && !pdfAllowed) {
@@ -58,17 +58,17 @@
           if (data.logged_in) {
             discordUser = { username: data.username, has_pdf_access: data.has_pdf_access };
             hasPdfAccess = data.has_pdf_access;
-            hasUnrestrictedPdf = data.has_unrestricted_pdf ?? false;
+            hasUnrestrictedAccess = data.has_unrestricted_access ?? false;
           } else {
             discordUser = null;
             hasPdfAccess = false;
-            hasUnrestrictedPdf = false;
+            hasUnrestrictedAccess = false;
           }
         })
         .catch(() => {
           discordUser = null;
           hasPdfAccess = false;
-          hasUnrestrictedPdf = false;
+          hasUnrestrictedAccess = false;
         });
     }
   });
@@ -530,7 +530,7 @@
                         () => {
                           discordUser = null;
                           hasPdfAccess = false;
-                          hasUnrestrictedPdf = false;
+                          hasUnrestrictedAccess = false;
                         }
                       );
                     }}>{t("discord_logout")}</button

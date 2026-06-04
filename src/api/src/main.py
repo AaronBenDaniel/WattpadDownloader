@@ -36,14 +36,14 @@ from create_book import (
     logger,
     slugify,
     Story,
-    List,
 )
 from create_book.parser import clean_tree, fetch_tree_images
 from auth import (
     auth_router,
-    check_guild_membership,
+    fetch_guild_member,
     require_pdf_access,
     get_current_user,
+    has_unrestricted_access,
 )
 
 app = FastAPI()
@@ -350,11 +350,11 @@ async def handle_download(
                 media_type = "application/zip"
                 extension = "zip"
 
-        async def iterfile(file_size, max_download_minutes: float=10):
+        async def iterfile(file_size, max_download_minutes: float = 10):
             chunk_size = 512 * 4
             sleep_duration = 0.1
-            num_chunks = (
-                max_download_minutes * 60 / sleep_duration
+            num_chunks = max(
+                max_download_minutes * 60 / sleep_duration, 1
             )  # number of chunks in 10 minutes
             if (
                 num_chunks * chunk_size < file_size
@@ -368,8 +368,12 @@ async def handle_download(
 
         max_download_minutes = 10
         user = get_current_user(request)
-        if user and await check_guild_membership(user["id"]):
-            max_download_minutes = 5
+        if user:
+            member = await fetch_guild_member(user["id"])
+            if member:
+                max_download_minutes = 5
+                if has_unrestricted_access(member):
+                    max_download_minutes = 0
 
         return StreamingResponse(
             iterfile(file_size, max_download_minutes),

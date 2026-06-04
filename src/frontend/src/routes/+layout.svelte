@@ -33,14 +33,15 @@
 
 {@render children()}
 
-<footer class="footer footer-center bg-base-300 text-base-content fixed bottom-0 p-4">
-  <aside>
-    <a
-      href="https://discord.gg/P9RHC4KCwd"
-      target="_blank"
-      class="link"
-      data-umami-event="Footer Discord">{t("footer_discord")}</a
-    >
-    <p>{t("footer_copyright")}</p>
-  </aside>
+<footer
+  class="footer bg-base-300 text-base-content fixed bottom-0 flex items-center justify-center gap-4 px-4 py-2 text-sm"
+>
+  <a
+    href="https://discord.gg/P9RHC4KCwd"
+    target="_blank"
+    class="link"
+    data-umami-event="Footer Discord">{t("footer_discord")}</a
+  >
+  <span class="text-base-content/30">·</span>
+  <p>{t("footer_copyright")}</p>
 </footer>
