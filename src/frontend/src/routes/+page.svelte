@@ -1,5 +1,11 @@
 <script>
   import { t } from "$lib/i18n/index.svelte.js";
+  import {
+    hasFeature,
+    getUserId,
+    getExternalIdentifier,
+    clearUser
+  } from "$lib/stores/features.svelte.js";
   import LanguageSelector from "$lib/components/LanguageSelector.svelte";
   import { browser } from "$app/environment";
 
@@ -14,9 +20,12 @@
   import GlobeIcon from "$lib/icons/GlobeIcon.svelte";
   import InfoIcon from "$lib/icons/InfoIcon.svelte";
   import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
+  import BookIcon from "$lib/icons/BookIcon.svelte";
+  import FileTextIcon from "$lib/icons/FileTextIcon.svelte";
 
   let inputUrl = $state("");
   let storyURLTutorialModal = $state();
+  let signOutModal = $state();
   let showPassword = $state(false);
   let includeImages = $state(false);
   let downloadAsPdf = $state(false); // 0 = epub, 1 = pdf
@@ -35,12 +44,24 @@
     password: ""
   });
 
+  let isBulkDownload = $derived(source !== "url" || mode === "list");
+  let pdfAllowed = $derived(
+    hasFeature("pdf_download") && (!isBulkDownload || hasFeature("unrestricted_pdf"))
+  );
+
+  $effect(() => {
+    if (downloadAsPdf && !pdfAllowed) {
+      downloadAsPdf = false;
+    }
+  });
+
   let downloadButtonDisabled = $derived(
     (!inputUrl && urlNeeded) || (loginRequired && !(credentials.username && credentials.password))
   );
 
-  let url = $derived(
-    `/download/` +
+  let url = $derived.by(() => {
+    let base =
+      `/download/` +
       (urlNeeded ? downloadId : "0") +
       `?om=1` +
       `&download_images=${downloadImages}` +
@@ -48,8 +69,13 @@
         ? `&username=${encodeURIComponent(credentials.username)}&password=${encodeURIComponent(credentials.password)}`
         : "") +
       `&mode=${mode}` +
-      `&format=${downloadAsPdf ? "pdf" : "epub"}`
-  );
+      `&format=${downloadAsPdf ? "pdf" : "epub"}`;
+    const uid = getUserId();
+    if (uid) {
+      base += `&user_id=${encodeURIComponent(uid)}`;
+    }
+    return base;
+  });
 
   /** @param {string} input */
   const setInputAsValid = (input) => {
@@ -70,6 +96,7 @@
     input = input.toLowerCase();
 
     if (!input) {
+      rememberedMode = "";
       setInputAsValid("");
       return;
     }
@@ -394,33 +421,116 @@
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="border-base-200 mt-1 flex items-center justify-between gap-4 border-t pt-3.5">
-            <div class="flex flex-col gap-1.5">
-              <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
-                <input
-                  type="checkbox"
-                  class="checkbox checkbox-xs checkbox-primary"
-                  name="include_images"
-                  data-include-images
-                  bind:checked={downloadImages}
-                />
-                <span
-                  ><strong>{t("include_images_bold")}</strong>
-                  <span class="text-base-content/50">{t("include_images")}</span></span
-                >
-              </label>
+          <!-- 4 · FORMAT -->
+          <div
+            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2
+              transition-opacity duration-200 {!pdfAllowed ? 'opacity-50' : ''}"
+            data-section="format"
+            aria-disabled={!pdfAllowed}
+          >
+            <span
+              class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
+                text-xs font-bold {pdfAllowed
+                ? 'step-badge-active border-primary/30'
+                : 'bg-base-200 text-base-content/50 border-base-300'}">4</span
+            >
+            <div class="flex min-h-6 items-center gap-2.5">
+              <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
+                {t("format_label")}
+              </h3>
+              {#if !pdfAllowed}
+                <span class="badge badge-outline badge-xs font-semibold tracking-wider uppercase">
+                  {#if !hasFeature("pdf_download")}
+                    {t(getUserId() ? "format_pdf_no_access" : "format_pdf_locked")}
+                  {:else}
+                    {t("format_pdf_bulk_locked")}
+                  {/if}
+                </span>
+              {/if}
             </div>
-            <button
-              type="submit"
-              class="btn btn-primary"
-              id="wpd-submit"
-              name="submit"
-              disabled={downloadButtonDisabled}
-              ><a href={url} onclick={() => (afterDownloadPage = true)}>
-                <DownloadIcon /><span data-cta>{t("download")}</span></a
-              >
-            </button>
+            <div class="col-start-2 {!pdfAllowed ? 'pointer-events-none' : ''}">
+              <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Format">
+                {#each [{ key: "epub", labelKey: "format_epub", icon: BookIcon }, { key: "pdf", labelKey: "format_pdf", icon: FileTextIcon }] as fmt}
+                  {@const Icon = fmt.icon}
+                  {@const isActive = fmt.key === "pdf" ? downloadAsPdf : !downloadAsPdf}
+                  <button
+                    type="button"
+                    class="focus-visible:outline-primary grid min-w-0 flex-1 basis-28 grid-cols-[auto_1fr] items-center
+                      gap-x-2.5 rounded-lg border p-2.5 text-left transition-all
+                      duration-150 focus-visible:outline-2 focus-visible:outline-offset-2
+                      {isActive
+                      ? 'border-primary bg-primary/5 ring-primary ring-1 ring-inset'
+                      : 'bg-base-200/30 border-base-300 hover:border-base-content/20 hover:bg-base-100 cursor-pointer'}"
+                    role="radio"
+                    aria-checked={isActive}
+                    disabled={!pdfAllowed}
+                    onclick={() => (downloadAsPdf = fmt.key === "pdf")}
+                  >
+                    <span
+                      class="col-start-1 row-start-1 inline-flex size-5 items-center justify-center
+                        {isActive ? 'text-primary' : 'text-base-content/60'}"><Icon /></span
+                    >
+                    <span class="col-start-2 row-start-1 text-sm font-semibold"
+                      >{t(fmt.labelKey)}</span
+                    >
+                  </button>
+                {/each}
+              </div>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="border-base-200 mt-1 flex flex-col gap-3 border-t pt-3.5">
+            <div class="flex items-center justify-between gap-4">
+              <div class="flex flex-col gap-1.5">
+                <label class="inline-flex cursor-pointer items-center gap-2 text-sm select-none">
+                  <input
+                    type="checkbox"
+                    class="checkbox checkbox-xs checkbox-primary"
+                    name="include_images"
+                    data-include-images
+                    bind:checked={downloadImages}
+                  />
+                  <span
+                    ><strong>{t("include_images_bold")}</strong>
+                    <span class="text-base-content/50">{t("include_images")}</span></span
+                  >
+                </label>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-4">
+              {#if getExternalIdentifier()}
+                <div class="flex items-center gap-2 text-xs">
+                  <span class="text-base-content/60"
+                    >{t("signed_in_as")}
+                    <span class="font-semibold">{getExternalIdentifier()}</span></span
+                  >
+                  <button
+                    type="button"
+                    class="badge badge-outline badge-sm hover:bg-base-300 cursor-pointer whitespace-nowrap"
+                    onclick={() => signOutModal.showModal()}>{t("sign_out")}</button
+                  >
+                </div>
+              {:else}
+                <span class="text-base-content/50 text-xs"
+                  >{t("sign_in_cta")}
+                  <a href="https://discord.gg/P9RHC4KCwd" target="_blank" class="link"
+                    >{t("discord_link")}</a
+                  ></span
+                >
+              {/if}
+              <button
+                type="submit"
+                class="btn btn-primary"
+                id="wpd-submit"
+                name="submit"
+                disabled={downloadButtonDisabled}
+                ><a href={url} onclick={() => (afterDownloadPage = true)}>
+                  <DownloadIcon /><span data-cta>{t("download")}</span></a
+                >
+              </button>
+            </div>
           </div>
         </form>
       {:else}
@@ -490,6 +600,28 @@
       </li>
       <li>{t("modal_step5")}</li>
     </ol>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>
+
+<dialog class="modal" bind:this={signOutModal}>
+  <div class="modal-box max-w-sm">
+    <h3 class="text-lg font-bold">{t("sign_out_confirm_title")}</h3>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn btn-ghost">{t("cancel")}</button>
+      </form>
+      <button
+        class="btn btn-error"
+        onclick={() => {
+          signOutModal.close();
+          clearUser();
+          window.location.reload();
+        }}>{t("sign_out")}</button
+      >
+    </div>
   </div>
   <form method="dialog" class="modal-backdrop">
     <button>close</button>

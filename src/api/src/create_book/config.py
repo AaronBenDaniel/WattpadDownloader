@@ -15,6 +15,8 @@ class Config(BaseSettings):
     USE_CACHE: bool = True
     CACHE_TYPE: CacheTypes = CacheTypes.file
     REDIS_CONNECTION_URL: str = ""
+    FEATURE_GATING_ENABLED: bool = False
+    ADMIN_API_KEY: str = ""
 
     @field_validator("USE_CACHE", mode="before")
     def validate_use_cache(cls, value):
@@ -30,17 +32,35 @@ class Config(BaseSettings):
             return "file"
         return value
 
+    @field_validator("FEATURE_GATING_ENABLED", mode="before")
+    def validate_feature_gating(cls, value):
+        if value == "":
+            return False
+        return value
+
     @model_validator(mode="after")
-    def prevent_mismatched_redis_url(self):
+    def validate_config(self):
+        if self.FEATURE_GATING_ENABLED:
+            if not self.REDIS_CONNECTION_URL:
+                raise ValueError(
+                    "REDIS_CONNECTION_URL required when FEATURE_GATING_ENABLED=true"
+                )
+            if not self.ADMIN_API_KEY:
+                raise ValueError(
+                    "ADMIN_API_KEY required when FEATURE_GATING_ENABLED=true"
+                )
+
         match self.CACHE_TYPE:
             case CacheTypes.file:
-                if self.REDIS_CONNECTION_URL:
+                if self.REDIS_CONNECTION_URL and not self.FEATURE_GATING_ENABLED:
                     raise ValueError(
-                        "REDIS_CONNECTION_URL provided when File cache selected. To use Redis as a cache, set CACHE_TYPE=redis."
+                        "REDIS_CONNECTION_URL provided when File cache selected. "
+                        "To use Redis as a cache, set CACHE_TYPE=redis."
                     )
             case CacheTypes.redis:
                 if not self.REDIS_CONNECTION_URL:
                     raise ValueError(
-                        "REDIS_CONNECTION_URL not provided when Redis cache selected. To use File cache, set CACHE_TYPE=file."
+                        "REDIS_CONNECTION_URL not provided when Redis cache selected. "
+                        "To use File cache, set CACHE_TYPE=file."
                     )
         return self

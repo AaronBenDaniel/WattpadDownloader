@@ -45,5 +45,19 @@
   "library": "Library",
   "library_desc": "Kesemuanya daripada Library anda",
   "archive": "Archive",
-  "archive_desc": "Kesemuanya daripada Archive anda"
+  "archive_desc": "Kesemuanya daripada Archive anda",
+  "format_label": "Format",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Memerlukan log masuk",
+  "format_pdf_no_access": "Tiada akses PDF",
+  "format_pdf_bulk_locked": "Cerita sahaja",
+  "activated_title": "Anda Telah Diaktifkan!",
+  "activated_body": "Muat turun PDF kini tersedia. Anda boleh kembali ke pemuat turun untuk bermula.",
+  "activated_home": "Pergi ke Pemuat Turun",
+  "signed_in_as": "Log masuk sebagai",
+  "sign_out": "Log keluar",
+  "sign_out_confirm_title": "Adakah anda pasti mahu log keluar?",
+  "cancel": "Batal",
+  "sign_in_cta": "Log masuk dengan menyertai"
 }

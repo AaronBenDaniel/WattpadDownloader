@@ -45,5 +45,19 @@
   "library": "ห้องสมุด",
   "library_desc": "ทุกอย่างจากห้องสมุดของคุณ",
   "archive": "คลังเก็บ",
-  "archive_desc": "ทุกอย่างจากคลังเก็บของคุณ"
+  "archive_desc": "ทุกอย่างจากคลังเก็บของคุณ",
+  "format_label": "รูปแบบ",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "ต้องเข้าสู่ระบบ",
+  "format_pdf_no_access": "ไม่มีสิทธิ์ใช้ PDF",
+  "format_pdf_bulk_locked": "เฉพาะเรื่องเดียว",
+  "activated_title": "เปิดใช้งานแล้ว!",
+  "activated_body": "การดาวน์โหลด PDF พร้อมใช้งานแล้ว คุณสามารถกลับไปที่ตัวดาวน์โหลดเพื่อเริ่มต้น",
+  "activated_home": "ไปที่ตัวดาวน์โหลด",
+  "signed_in_as": "เข้าสู่ระบบในชื่อ",
+  "sign_out": "ออกจากระบบ",
+  "sign_out_confirm_title": "คุณแน่ใจหรือไม่ว่าต้องการออกจากระบบ?",
+  "cancel": "ยกเลิก",
+  "sign_in_cta": "เข้าสู่ระบบโดยเข้าร่วม"
 }

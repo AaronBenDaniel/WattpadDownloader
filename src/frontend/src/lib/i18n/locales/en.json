@@ -45,5 +45,19 @@
   "library": "Library",
   "library_desc": "Everything from your library",
   "archive": "Archive",
-  "archive_desc": "Everything from your archive"
+  "archive_desc": "Everything from your archive",
+  "format_label": "Format",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Requires sign-in",
+  "format_pdf_no_access": "No PDF access",
+  "format_pdf_bulk_locked": "Stories only",
+  "activated_title": "You're Activated!",
+  "activated_body": "PDF downloads are now available. You can return to the downloader to get started.",
+  "activated_home": "Go to Downloader",
+  "signed_in_as": "Signed in as",
+  "sign_out": "Sign out",
+  "sign_out_confirm_title": "Are you sure you want to sign out?",
+  "cancel": "Cancel",
+  "sign_in_cta": "Sign in by joining the"
 }

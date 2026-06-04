@@ -45,5 +45,19 @@
   "library": "Kütüphane",
   "library_desc": "Kütüphanenizdeki her şey",
   "archive": "Arşiv",
-  "archive_desc": "Arşivinizdeki her şey"
+  "archive_desc": "Arşivinizdeki her şey",
+  "format_label": "Format",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Giriş gerekli",
+  "format_pdf_no_access": "PDF erişimi yok",
+  "format_pdf_bulk_locked": "Yalnızca hikayeler",
+  "activated_title": "Aktive Edildiniz!",
+  "activated_body": "PDF indirmeleri artık kullanılabilir. Başlamak için indirici sayfasına dönebilirsiniz.",
+  "activated_home": "İndiriciye Git",
+  "signed_in_as": "Giriş yapıldı:",
+  "sign_out": "Çıkış yap",
+  "sign_out_confirm_title": "Çıkış yapmak istediğinizden emin misiniz?",
+  "cancel": "İptal",
+  "sign_in_cta": "Giriş yapmak için katılın:"
 }

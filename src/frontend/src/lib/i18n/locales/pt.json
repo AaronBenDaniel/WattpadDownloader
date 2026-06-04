@@ -45,5 +45,19 @@
   "library": "Biblioteca",
   "library_desc": "Tudo da sua biblioteca",
   "archive": "Arquivo",
-  "archive_desc": "Tudo do seu arquivo"
+  "archive_desc": "Tudo do seu arquivo",
+  "format_label": "Formato",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Requer login",
+  "format_pdf_no_access": "Sem acesso a PDF",
+  "format_pdf_bulk_locked": "Apenas histórias",
+  "activated_title": "Você foi Ativado!",
+  "activated_body": "Downloads em PDF já estão disponíveis. Você pode voltar ao downloader para começar.",
+  "activated_home": "Ir para o Downloader",
+  "signed_in_as": "Conectado como",
+  "sign_out": "Sair",
+  "sign_out_confirm_title": "Tem certeza de que deseja sair?",
+  "cancel": "Cancelar",
+  "sign_in_cta": "Entre ao participar do"
 }

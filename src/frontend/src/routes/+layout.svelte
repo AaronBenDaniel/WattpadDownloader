@@ -1,6 +1,7 @@
 <script>
   import "../app.css";
   import { init, i18n, t } from "$lib/i18n/index.svelte.js";
+  import { loadFeatures } from "$lib/stores/features.svelte.js";
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
   /**
    * @typedef {Object} Props
@@ -12,6 +13,7 @@
 
   $effect(() => {
     init();
+    loadFeatures();
   });
 
   $effect(() => {

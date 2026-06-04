@@ -1,10 +1,12 @@
 """WattpadDownloader API Server."""
 
 import asyncio
+from contextlib import asynccontextmanager
 from enum import Enum
 from io import BytesIO
 from pathlib import Path
 from typing import Optional
+from uuid import UUID
 from zipfile import ZipFile
 
 from aiohttp import ClientResponseError
@@ -18,6 +20,8 @@ from fastapi.responses import (
     StreamingResponse,
 )
 from fastapi.staticfiles import StaticFiles
+from redis.asyncio import Redis
+from redis.exceptions import ConnectionError as RedisConnectionError
 
 from create_book import (
     EPUBGenerator,
@@ -36,11 +40,32 @@ from create_book import (
     logger,
     slugify,
     Story,
-    List,
 )
+from create_book.config import Config
 from create_book.parser import clean_tree, fetch_tree_images
+from routers import admin_router, user_router, activation_router
+from users import RedisUserRepository
 
-app = FastAPI()
+config = Config()
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    if config.FEATURE_GATING_ENABLED:
+        redis = Redis.from_url(config.REDIS_CONNECTION_URL)
+        app.state.user_repo = RedisUserRepository(redis)
+    else:
+        app.state.user_repo = None
+    yield
+    if config.FEATURE_GATING_ENABLED:
+        await redis.aclose()
+
+
+app = FastAPI(lifespan=lifespan)
+app.include_router(admin_router)
+app.include_router(user_router)
+app.include_router(activation_router)
+
 BUILD_PATH = Path(__file__).parent / "build"
 
 
@@ -187,10 +212,10 @@ async def download_many_stories(
                     story_file = await download_story(
                         story, download_images, format, cookies
                     )
-                    file_name = f"{slugify(story['title'])}_{story['id']}{'_images' if download_images else ''}.{'epub' if format==DownloadFormat.epub else 'pdf'}"
+                    file_name = f"{slugify(story['title'])}_{story['id']}{'_images' if download_images else ''}.{'epub' if format == DownloadFormat.epub else 'pdf'}"
                 except Exception as error:
                     story_file = BytesIO()
-                    story_file.write(str(error).encode('utf-8'))
+                    story_file.write(str(error).encode("utf-8"))
                     story_file.seek(0)
                     file_name = f"{slugify(story['title'])}_{story['id']}_FAILURE.txt"
 
@@ -239,12 +264,14 @@ def download_wp_error_handler(request: Request, exception: WattpadError):
 
 @app.get("/download/{download_id}")
 async def handle_download(
+    request: Request,
     download_id: int,
     download_images: bool = False,
     mode: DownloadMode = DownloadMode.story,
     format: DownloadFormat = DownloadFormat.epub,
     username: Optional[str] = None,
     password: Optional[str] = None,
+    user_id: Optional[str] = None,
 ):
     with start_action(
         action_type="handle_download",
@@ -275,6 +302,21 @@ async def handle_download(
         else:
             cookies = None
 
+        repo = getattr(request.app.state, "user_repo", None)
+        user_record = None
+        if repo and user_id:
+            try:
+                user_record = await repo.get(UUID(user_id))
+            except ValueError:
+                pass
+            except RedisConnectionError:
+                if format == DownloadFormat.pdf:
+                    return HTMLResponse(
+                        status_code=503,
+                        content="Service temporarily unavailable. Please try again. "
+                        'Support is available on the <a href="https://discord.gg/P9RHC4KCwd" target="_blank">Discord</a>',
+                    )
+
         match format:
             case DownloadFormat.epub:
                 media_type = "application/epub+zip"
@@ -282,6 +324,34 @@ async def handle_download(
             case DownloadFormat.pdf:
                 media_type = "application/pdf"
                 extension = "pdf"
+                if repo is not None:
+                    allowed = user_record is not None and user_record.has_feature(
+                        "pdf_download"
+                    )
+                    if not allowed:
+                        return HTMLResponse(
+                            status_code=403,
+                            content="You do not have access to PDF downloads. "
+                            'Support is available on the <a href="https://discord.gg/P9RHC4KCwd" target="_blank">Discord</a>. '
+                            '<br><br><a href="/">Return to downloader</a>',
+                        )
+                    if mode in (
+                        DownloadMode.list,
+                        DownloadMode.archive,
+                        DownloadMode.library,
+                    ) and not user_record.has_feature("unrestricted_pdf"):
+                        return HTMLResponse(
+                            status_code=403,
+                            content="Bulk PDF downloads require the unrestricted PDF permission. "
+                            'Support is available on the <a href="https://discord.gg/P9RHC4KCwd" target="_blank">Discord</a>. '
+                            '<br><br><a href="/">Return to downloader</a>',
+                        )
+
+        max_download_minutes = 10
+        if user_record:
+            new_max_download_minutes = user_record.feature_value("max_download_minutes")
+            if new_max_download_minutes is not None:
+                max_download_minutes = new_max_download_minutes
 
         id_download = True
         match mode:
@@ -334,13 +404,14 @@ async def handle_download(
                 media_type = "application/zip"
                 extension = "zip"
 
-        async def iterfile(file_size):
+        async def iterfile(file_size, max_time: float = 10):
+            """
+            `max_time` is in minutes
+            """
             chunk_size = 512 * 4
-            sleep_duration = 0.1
-            num_chunks = 10 * 60 / sleep_duration  # number of chunks in 10 minutes
-            if (
-                num_chunks * chunk_size < file_size
-            ):  # Will the download take >10 minutes
+            sleep_duration = 0.1  # seconds
+            num_chunks = max(1, max_time * 60 / sleep_duration)  # number of chunks
+            if num_chunks * chunk_size < file_size:  # Will the download take >max_time
                 chunk_size = int(file_size / num_chunks)
             while chunk := output_buffer.read(chunk_size):
                 await asyncio.sleep(sleep_duration)  # throttle download speed
@@ -349,10 +420,10 @@ async def handle_download(
         file_size = output_buffer.getbuffer().nbytes
 
         return StreamingResponse(
-            iterfile(file_size),
+            iterfile(file_size, max_download_minutes),
             media_type=media_type,
             headers={
-                "Content-Disposition": f'attachment; filename="{slugify(metadata["name" if mode==DownloadMode.list else "title"]) if id_download else (username+'_'+("archive" if mode == DownloadMode.archive else "library"))}{'_'+str(download_id) if id_download else ""}{"_images" if download_images else ""}{'_'+format.value if extension == "zip" else ""}.{extension}"',  # Thanks https://stackoverflow.com/a/72729058
+                "Content-Disposition": f'attachment; filename="{slugify(metadata["name" if mode == DownloadMode.list else "title"]) if id_download else (username + "_" + ("archive" if mode == DownloadMode.archive else "library"))}{"_" + str(download_id) if id_download else ""}{"_images" if download_images else ""}{"_" + format.value if extension == "zip" else ""}.{extension}"',  # Thanks https://stackoverflow.com/a/72729058
                 "Content-Length": str(file_size),
             },
         )
@@ -362,6 +433,14 @@ async def handle_download(
 def donate():
     """Redirect to donation URL."""
     return RedirectResponse("https://buymeacoffee.com/theonlywayup")
+
+
+FALLBACK_PATH = BUILD_PATH / "200.html"
+
+
+@app.get("/activated")
+def activated_fallback():
+    return FileResponse(FALLBACK_PATH)
 
 
 app.mount("/", StaticFiles(directory=BUILD_PATH), "static")
