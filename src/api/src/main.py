@@ -364,7 +364,17 @@ def donate():
     return RedirectResponse("https://buymeacoffee.com/theonlywayup")
 
 
-app.mount("/", StaticFiles(directory=BUILD_PATH), "static")
+class CachedStaticFiles(StaticFiles):
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        if path.startswith("_app/immutable/"):
+            response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+        else:
+            response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
+app.mount("/", CachedStaticFiles(directory=BUILD_PATH), "static")
 
 
 if __name__ == "__main__":
