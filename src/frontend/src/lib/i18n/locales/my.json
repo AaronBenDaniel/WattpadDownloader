@@ -45,5 +45,11 @@
   "library": "စာကြည့်တိုက်",
   "library_desc": "သင့်စာကြည့်တိုက်မှ အရာအားလုံး",
   "archive": "မှတ်တမ်း",
-  "archive_desc": "သင့်မှတ်တမ်းမှ အရာအားလုံး"
+  "archive_desc": "သင့်မှတ်တမ်းမှ အရာအားလုံး",
+  "format_label": "ဖိုင်ပုံစံ",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "ဝင်ရောက်ရန် လိုအပ်သည်",
+  "format_pdf_no_access": "PDF အသုံးပြုခွင့် မရှိပါ",
+  "format_pdf_bulk_locked": "ဇာတ်လမ်းတစ်ခုတည်းသာ"
 }

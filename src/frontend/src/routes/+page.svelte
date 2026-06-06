@@ -14,12 +14,17 @@
   import GlobeIcon from "$lib/icons/GlobeIcon.svelte";
   import InfoIcon from "$lib/icons/InfoIcon.svelte";
   import DiscordIcon from "$lib/icons/DiscordIcon.svelte";
+  import BookIcon from "$lib/icons/BookIcon.svelte";
+  import FileTextIcon from "$lib/icons/FileTextIcon.svelte";
+
+  let hasPdfAccess = $state(false);
+  let hasUnrestrictedPdf = $state(false);
 
   let inputUrl = $state("");
   let storyURLTutorialModal = $state();
   let showPassword = $state(false);
   let includeImages = $state(false);
-  let downloadAsPdf = $state(false); // 0 = epub, 1 = pdf
+  let downloadAsPdf = $state(false);
   let isPaidStory = $state(false);
   let downloadImages = $state(false);
   let source = $state("url");
@@ -33,6 +38,17 @@
   let credentials = $state({
     username: "",
     password: ""
+  });
+
+  let isBulkDownload = $derived(source !== "url" || mode === "list");
+  let pdfAllowed = $derived(
+    hasPdfAccess && (!isBulkDownload || hasUnrestrictedPdf)
+  );
+
+  $effect(() => {
+    if (downloadAsPdf && !pdfAllowed) {
+      downloadAsPdf = false;
+    }
   });
 
   let downloadButtonDisabled = $derived(
@@ -390,6 +406,64 @@
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4 · FORMAT -->
+          <div
+            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2
+              transition-opacity duration-200 {!pdfAllowed ? 'opacity-50' : ''}"
+            data-section="format"
+            aria-disabled={!pdfAllowed}
+          >
+            <span
+              class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
+                text-xs font-bold {pdfAllowed
+                ? 'step-badge-active border-primary/30'
+                : 'bg-base-200 text-base-content/50 border-base-300'}">4</span
+            >
+            <div class="flex min-h-6 items-center gap-2.5">
+              <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
+                {t("format_label")}
+              </h3>
+              {#if !pdfAllowed}
+                <span class="badge badge-outline badge-xs font-semibold tracking-wider uppercase">
+                  {#if !hasPdfAccess}
+                    {t("format_pdf_locked")}
+                  {:else}
+                    {t("format_pdf_bulk_locked")}
+                  {/if}
+                </span>
+              {/if}
+            </div>
+            <div class="col-start-2 {!pdfAllowed ? 'pointer-events-none' : ''}">
+              <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Format">
+                {#each [{ key: "epub", labelKey: "format_epub", icon: BookIcon }, { key: "pdf", labelKey: "format_pdf", icon: FileTextIcon }] as fmt}
+                  {@const Icon = fmt.icon}
+                  {@const isActive = fmt.key === "pdf" ? downloadAsPdf : !downloadAsPdf}
+                  <button
+                    type="button"
+                    class="focus-visible:outline-primary grid min-w-0 flex-1 basis-28 grid-cols-[auto_1fr] items-center
+                      gap-x-2.5 rounded-lg border p-2.5 text-left transition-all
+                      duration-150 focus-visible:outline-2 focus-visible:outline-offset-2
+                      {isActive
+                      ? 'border-primary bg-primary/5 ring-primary ring-1 ring-inset'
+                      : 'bg-base-200/30 border-base-300 hover:border-base-content/20 hover:bg-base-100 cursor-pointer'}"
+                    role="radio"
+                    aria-checked={isActive}
+                    disabled={!pdfAllowed}
+                    onclick={() => (downloadAsPdf = fmt.key === "pdf")}
+                  >
+                    <span
+                      class="col-start-1 row-start-1 inline-flex size-5 items-center justify-center
+                        {isActive ? 'text-primary' : 'text-base-content/60'}"><Icon /></span
+                    >
+                    <span class="col-start-2 row-start-1 text-sm font-semibold"
+                      >{t(fmt.labelKey)}</span
+                    >
+                  </button>
+                {/each}
               </div>
             </div>
           </div>

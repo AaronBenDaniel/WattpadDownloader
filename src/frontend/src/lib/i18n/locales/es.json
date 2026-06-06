@@ -45,5 +45,11 @@
   "library": "Biblioteca",
   "library_desc": "Todo desde tu biblioteca",
   "archive": "Archivo",
-  "archive_desc": "Todo desde tu archivo"
+  "archive_desc": "Todo desde tu archivo",
+  "format_label": "Formato",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Requiere inicio de sesión",
+  "format_pdf_no_access": "Sin acceso a PDF",
+  "format_pdf_bulk_locked": "Solo historias"
 }

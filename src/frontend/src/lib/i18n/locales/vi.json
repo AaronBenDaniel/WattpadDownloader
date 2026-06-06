@@ -45,5 +45,11 @@
   "library": "Thư viện",
   "library_desc": "Mọi thứ từ thư viện của bạn",
   "archive": "Lưu trữ",
-  "archive_desc": "Mọi thứ từ kho lưu trữ của bạn"
+  "archive_desc": "Mọi thứ từ kho lưu trữ của bạn",
+  "format_label": "Định dạng",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Cần đăng nhập",
+  "format_pdf_no_access": "Không có quyền tải PDF",
+  "format_pdf_bulk_locked": "Chỉ truyện đơn"
 }

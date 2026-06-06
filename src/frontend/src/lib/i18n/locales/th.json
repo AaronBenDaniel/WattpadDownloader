@@ -45,5 +45,11 @@
   "library": "ห้องสมุด",
   "library_desc": "ทุกอย่างจากห้องสมุดของคุณ",
   "archive": "คลังเก็บ",
-  "archive_desc": "ทุกอย่างจากคลังเก็บของคุณ"
+  "archive_desc": "ทุกอย่างจากคลังเก็บของคุณ",
+  "format_label": "รูปแบบ",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "ต้องเข้าสู่ระบบ",
+  "format_pdf_no_access": "ไม่มีสิทธิ์ใช้ PDF",
+  "format_pdf_bulk_locked": "เฉพาะเรื่องเดียว"
 }

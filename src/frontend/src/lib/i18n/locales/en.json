@@ -45,5 +45,11 @@
   "library": "Library",
   "library_desc": "Everything from your library",
   "archive": "Archive",
-  "archive_desc": "Everything from your archive"
+  "archive_desc": "Everything from your archive",
+  "format_label": "Format",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "Requires sign-in",
+  "format_pdf_no_access": "No PDF access",
+  "format_pdf_bulk_locked": "Stories only"
 }

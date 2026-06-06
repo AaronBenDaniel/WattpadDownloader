@@ -45,5 +45,11 @@
   "library": "පුස්තකාලය",
   "library_desc": "ඔබේ පුස්තකාලයේ සියල්ල",
   "archive": "ලේඛනාගාරය",
-  "archive_desc": "ඔබේ ලේඛනාගාරයේ සියල්ල"
+  "archive_desc": "ඔබේ ලේඛනාගාරයේ සියල්ල",
+  "format_label": "ආකෘතිය",
+  "format_epub": "EPUB",
+  "format_pdf": "PDF",
+  "format_pdf_locked": "පුරනය වීම අවශ්‍යයි",
+  "format_pdf_no_access": "PDF ප්‍රවේශය නැත",
+  "format_pdf_bulk_locked": "කතා පමණි"
 }
