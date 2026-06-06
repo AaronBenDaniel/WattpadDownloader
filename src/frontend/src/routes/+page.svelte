@@ -31,7 +31,7 @@
   let source = $state("url");
   let urlNeeded = $derived(source == "url");
   let loginRequired = $derived(source != "url" || isPaidStory);
-  let invalidUrl = $derived(false);
+  let invalidUrl = $state(false);
   let afterDownloadPage = $derived(false);
   let downloadId = $state("");
   let rememberedMode = $state("");
@@ -74,7 +74,9 @@
   });
 
   let downloadButtonDisabled = $derived(
-    (!inputUrl && urlNeeded) || (loginRequired && !(credentials.username && credentials.password))
+    (!inputUrl && urlNeeded) ||
+      (invalidUrl && urlNeeded) ||
+      (loginRequired && !(credentials.username && credentials.password))
   );
 
   let url = $derived(
