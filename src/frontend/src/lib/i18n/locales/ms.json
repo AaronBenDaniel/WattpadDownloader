@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "Memerlukan log masuk",
   "format_pdf_no_access": "Tiada akses PDF",
-  "format_pdf_bulk_locked": "Cerita sahaja"
+  "format_pdf_bulk_locked": "Cerita sahaja",
+  "discord_sign_in": "Log masuk dengan Discord",
+  "discord_signed_in_as": "Log masuk sebagai",
+  "discord_join_server": "Sertai pelayan Discord kami",
+  "discord_logout": "Log keluar"
 }

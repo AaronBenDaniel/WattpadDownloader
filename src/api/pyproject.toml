@@ -15,6 +15,7 @@ dependencies = [
     "backoff>=2.2.1",
     "aiohttp-client-cache[all]",
     "bs4>=0.0.2",
+    "pyjwt>=2.8.0",
     "uvicorn>=0.32.1",
     "weasyprint>=63.0",
     "jinja2>=3.1.6",

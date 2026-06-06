@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "Giriş gerekli",
   "format_pdf_no_access": "PDF erişimi yok",
-  "format_pdf_bulk_locked": "Yalnızca hikayeler"
+  "format_pdf_bulk_locked": "Yalnızca hikayeler",
+  "discord_sign_in": "Discord ile giriş yap",
+  "discord_signed_in_as": "Giriş yapıldı:",
+  "discord_join_server": "Discord sunucumuza katılın",
+  "discord_logout": "Çıkış yap"
 }

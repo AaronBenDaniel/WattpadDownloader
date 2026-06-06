@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "Requiere inicio de sesión",
   "format_pdf_no_access": "Sin acceso a PDF",
-  "format_pdf_bulk_locked": "Solo historias"
+  "format_pdf_bulk_locked": "Solo historias",
+  "discord_sign_in": "Iniciar sesión con Discord",
+  "discord_signed_in_as": "Conectado como",
+  "discord_join_server": "Únete a nuestro servidor de Discord",
+  "discord_logout": "Cerrar sesión"
 }

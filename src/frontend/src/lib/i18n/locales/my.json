@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "ဝင်ရောက်ရန် လိုအပ်သည်",
   "format_pdf_no_access": "PDF အသုံးပြုခွင့် မရှိပါ",
-  "format_pdf_bulk_locked": "ဇာတ်လမ်းတစ်ခုတည်းသာ"
+  "format_pdf_bulk_locked": "ဇာတ်လမ်းတစ်ခုတည်းသာ",
+  "discord_sign_in": "Discord ဖြင့် ဝင်ရောက်ပါ",
+  "discord_signed_in_as": "ဝင်ရောက်ထားသည်",
+  "discord_join_server": "ကျွန်ုပ်တို့၏ Discord ဆာဗာသို့ ပါဝင်ပါ",
+  "discord_logout": "ထွက်ရန်"
 }

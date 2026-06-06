@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "ต้องเข้าสู่ระบบ",
   "format_pdf_no_access": "ไม่มีสิทธิ์ใช้ PDF",
-  "format_pdf_bulk_locked": "เฉพาะเรื่องเดียว"
+  "format_pdf_bulk_locked": "เฉพาะเรื่องเดียว",
+  "discord_sign_in": "เข้าสู่ระบบด้วย Discord",
+  "discord_signed_in_as": "เข้าสู่ระบบในชื่อ",
+  "discord_join_server": "เข้าร่วม Discord ของเรา",
+  "discord_logout": "ออกจากระบบ"
 }

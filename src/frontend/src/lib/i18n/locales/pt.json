@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "Requer login",
   "format_pdf_no_access": "Sem acesso a PDF",
-  "format_pdf_bulk_locked": "Apenas histórias"
+  "format_pdf_bulk_locked": "Apenas histórias",
+  "discord_sign_in": "Entrar com Discord",
+  "discord_signed_in_as": "Conectado como",
+  "discord_join_server": "Junte-se ao nosso servidor Discord",
+  "discord_logout": "Sair"
 }

@@ -39,8 +39,15 @@ from create_book import (
     List,
 )
 from create_book.parser import clean_tree, fetch_tree_images
+from auth import (
+    auth_router,
+    check_guild_membership,
+    require_pdf_access,
+    get_current_user,
+)
 
 app = FastAPI()
+app.include_router(auth_router)
 BUILD_PATH = Path(__file__).parent / "build"
 
 
@@ -190,7 +197,7 @@ async def download_many_stories(
                     file_name = f"{slugify(story['title'])}_{story['id']}{'_images' if download_images else ''}.{'epub' if format==DownloadFormat.epub else 'pdf'}"
                 except Exception as error:
                     story_file = BytesIO()
-                    story_file.write(str(error).encode('utf-8'))
+                    story_file.write(str(error).encode("utf-8"))
                     story_file.seek(0)
                     file_name = f"{slugify(story['title'])}_{story['id']}_FAILURE.txt"
 
@@ -239,6 +246,7 @@ def download_wp_error_handler(request: Request, exception: WattpadError):
 
 @app.get("/download/{download_id}")
 async def handle_download(
+    request: Request,
     download_id: int,
     download_images: bool = False,
     mode: DownloadMode = DownloadMode.story,
@@ -274,6 +282,14 @@ async def handle_download(
                 )
         else:
             cookies = None
+
+        if format == DownloadFormat.pdf:
+            is_bulk = mode in (
+                DownloadMode.list,
+                DownloadMode.archive,
+                DownloadMode.library,
+            )
+            await require_pdf_access(request, is_bulk)
 
         match format:
             case DownloadFormat.epub:
@@ -334,13 +350,15 @@ async def handle_download(
                 media_type = "application/zip"
                 extension = "zip"
 
-        async def iterfile(file_size):
+        async def iterfile(file_size, max_download_minutes: float=10):
             chunk_size = 512 * 4
             sleep_duration = 0.1
-            num_chunks = 10 * 60 / sleep_duration  # number of chunks in 10 minutes
+            num_chunks = (
+                max_download_minutes * 60 / sleep_duration
+            )  # number of chunks in 10 minutes
             if (
                 num_chunks * chunk_size < file_size
-            ):  # Will the download take >10 minutes
+            ):  # Will the download take >max_download_minutes
                 chunk_size = int(file_size / num_chunks)
             while chunk := output_buffer.read(chunk_size):
                 await asyncio.sleep(sleep_duration)  # throttle download speed
@@ -348,8 +366,13 @@ async def handle_download(
 
         file_size = output_buffer.getbuffer().nbytes
 
+        max_download_minutes = 10
+        user = get_current_user(request)
+        if user and await check_guild_membership(user["id"]):
+            max_download_minutes = 5
+
         return StreamingResponse(
-            iterfile(file_size),
+            iterfile(file_size, max_download_minutes),
             media_type=media_type,
             headers={
                 "Content-Disposition": f'attachment; filename="{slugify(metadata["name" if mode==DownloadMode.list else "title"]) if id_download else (username+'_'+("archive" if mode == DownloadMode.archive else "library"))}{'_'+str(download_id) if id_download else ""}{"_images" if download_images else ""}{'_'+format.value if extension == "zip" else ""}.{extension}"',  # Thanks https://stackoverflow.com/a/72729058

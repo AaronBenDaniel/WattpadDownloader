@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "පුරනය වීම අවශ්‍යයි",
   "format_pdf_no_access": "PDF ප්‍රවේශය නැත",
-  "format_pdf_bulk_locked": "කතා පමණි"
+  "format_pdf_bulk_locked": "කතා පමණි",
+  "discord_sign_in": "Discord මගින් පුරනය වන්න",
+  "discord_signed_in_as": "පුරනය වී ඇත",
+  "discord_join_server": "අපගේ Discord සේවාදායකයට එකතු වන්න",
+  "discord_logout": "පිටවීම"
 }

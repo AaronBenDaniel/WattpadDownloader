@@ -51,5 +51,9 @@
   "format_pdf": "PDF",
   "format_pdf_locked": "Cần đăng nhập",
   "format_pdf_no_access": "Không có quyền tải PDF",
-  "format_pdf_bulk_locked": "Chỉ truyện đơn"
+  "format_pdf_bulk_locked": "Chỉ truyện đơn",
+  "discord_sign_in": "Đăng nhập bằng Discord",
+  "discord_signed_in_as": "Đã đăng nhập với",
+  "discord_join_server": "Tham gia Discord của chúng tôi",
+  "discord_logout": "Đăng xuất"
 }

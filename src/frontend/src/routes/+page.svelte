@@ -19,6 +19,7 @@
 
   let hasPdfAccess = $state(false);
   let hasUnrestrictedPdf = $state(false);
+  let discordUser = $state(null);
 
   let inputUrl = $state("");
   let storyURLTutorialModal = $state();
@@ -41,13 +42,34 @@
   });
 
   let isBulkDownload = $derived(source !== "url" || mode === "list");
-  let pdfAllowed = $derived(
-    hasPdfAccess && (!isBulkDownload || hasUnrestrictedPdf)
-  );
+  let pdfAllowed = $derived(hasPdfAccess && (!isBulkDownload || hasUnrestrictedPdf));
 
   $effect(() => {
     if (downloadAsPdf && !pdfAllowed) {
       downloadAsPdf = false;
+    }
+  });
+
+  $effect(() => {
+    if (browser) {
+      fetch("/auth/me", { credentials: "same-origin" })
+        .then((r) => r.json())
+        .then((data) => {
+          if (data.logged_in) {
+            discordUser = { username: data.username, has_pdf_access: data.has_pdf_access };
+            hasPdfAccess = data.has_pdf_access;
+            hasUnrestrictedPdf = data.has_unrestricted_pdf ?? false;
+          } else {
+            discordUser = null;
+            hasPdfAccess = false;
+            hasUnrestrictedPdf = false;
+          }
+        })
+        .catch(() => {
+          discordUser = null;
+          hasPdfAccess = false;
+          hasUnrestrictedPdf = false;
+        });
     }
   });
 
@@ -412,10 +434,8 @@
 
           <!-- 4 · FORMAT -->
           <div
-            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2
-              transition-opacity duration-200 {!pdfAllowed ? 'opacity-50' : ''}"
+            class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2"
             data-section="format"
-            aria-disabled={!pdfAllowed}
           >
             <span
               class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
@@ -429,16 +449,23 @@
               </h3>
               {#if !pdfAllowed}
                 <span class="badge badge-outline badge-xs font-semibold tracking-wider uppercase">
-                  {#if !hasPdfAccess}
+                  {#if !hasPdfAccess && !discordUser}
                     {t("format_pdf_locked")}
+                  {:else if !hasPdfAccess && discordUser}
+                    {t("format_pdf_no_access")}
                   {:else}
                     {t("format_pdf_bulk_locked")}
                   {/if}
                 </span>
               {/if}
             </div>
-            <div class="col-start-2 {!pdfAllowed ? 'pointer-events-none' : ''}">
-              <div class="flex flex-wrap gap-2.5" role="radiogroup" aria-label="Format">
+            <div class="col-start-2">
+              <div
+                class="flex flex-wrap gap-2.5 transition-opacity duration-200
+                  {!pdfAllowed ? 'pointer-events-none opacity-50' : ''}"
+                role="radiogroup"
+                aria-label="Format"
+              >
                 {#each [{ key: "epub", labelKey: "format_epub", icon: BookIcon }, { key: "pdf", labelKey: "format_pdf", icon: FileTextIcon }] as fmt}
                   {@const Icon = fmt.icon}
                   {@const isActive = fmt.key === "pdf" ? downloadAsPdf : !downloadAsPdf}
@@ -465,6 +492,51 @@
                   </button>
                 {/each}
               </div>
+              {#if !hasPdfAccess}
+                <div class="mt-2">
+                  {#if !discordUser}
+                    <a
+                      href="/auth/discord/login"
+                      class="btn btn-sm discord-btn bg-indigo-500 text-white hover:bg-indigo-600"
+                      data-umami-event="Discord Login"
+                    >
+                      <DiscordIcon width={16} height={13} />
+                      {t("discord_sign_in")}
+                    </a>
+                  {:else}
+                    <div class="flex items-center gap-2 text-sm">
+                      <span class="text-base-content/60">
+                        {t("discord_signed_in_as")}
+                        {discordUser.username}
+                      </span>
+                      <a
+                        href="https://discord.gg/P9RHC4KCwd"
+                        target="_blank"
+                        class="link text-sm font-semibold">{t("discord_join_server")}</a
+                      >
+                    </div>
+                  {/if}
+                </div>
+              {/if}
+              {#if discordUser && hasPdfAccess}
+                <div class="text-base-content/50 mt-1 flex items-center gap-2 text-xs">
+                  <DiscordIcon width={12} height={10} />
+                  <span>{discordUser.username}</span>
+                  <button
+                    type="button"
+                    class="link text-xs"
+                    onclick={() => {
+                      fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).then(
+                        () => {
+                          discordUser = null;
+                          hasPdfAccess = false;
+                          hasUnrestrictedPdf = false;
+                        }
+                      );
+                    }}>{t("discord_logout")}</button
+                  >
+                </div>
+              {/if}
             </div>
           </div>
 
