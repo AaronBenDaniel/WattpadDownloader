@@ -518,6 +518,19 @@
                         target="_blank"
                         class="link text-sm font-semibold">{t("discord_join_server")}</a
                       >
+                      <button
+                        type="button"
+                        class="link text-sm"
+                        onclick={() => {
+                          fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).then(
+                            () => {
+                              discordUser = null;
+                              hasPdfAccess = false;
+                              hasUnrestrictedAccess = false;
+                            }
+                          );
+                        }}>{t("discord_logout")}</button
+                      >
                     </div>
                   {/if}
                 </div>
