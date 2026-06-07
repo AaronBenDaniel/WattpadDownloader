@@ -438,14 +438,16 @@
           <div
             class="border-base-200 grid grid-cols-[28px_1fr] gap-x-3.5 gap-y-1.5 border-t py-2"
             data-section="format"
+            aria-disabled={!pdfAllowed}
           >
             <span
               class="mt-0.5 inline-flex size-[22px] items-center justify-center rounded-md border
-                text-xs font-bold {pdfAllowed
+                text-xs font-bold transition-opacity duration-200 {pdfAllowed
                 ? 'step-badge-active border-primary/30'
-                : 'bg-base-200 text-base-content/50 border-base-300'}">4</span
+                : 'bg-base-200 text-base-content/50 border-base-300 opacity-50'}">4</span
             >
-            <div class="flex min-h-6 items-center gap-2.5">
+            <div class="flex min-h-6 items-center gap-2.5 transition-opacity duration-200
+              {!pdfAllowed ? 'opacity-50' : ''}">
               <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
                 {t("format_label")}
               </h3>
