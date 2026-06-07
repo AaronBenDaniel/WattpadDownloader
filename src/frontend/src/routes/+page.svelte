@@ -17,6 +17,7 @@
   import BookIcon from "$lib/icons/BookIcon.svelte";
   import FileTextIcon from "$lib/icons/FileTextIcon.svelte";
 
+  let authDisabled = $state(false);
   let hasPdfAccess = $state(false);
   let hasUnrestrictedAccess = $state(false);
   let discordUser = $state(null);
@@ -55,7 +56,12 @@
       fetch("/auth/me", { credentials: "same-origin" })
         .then((r) => r.json())
         .then((data) => {
-          if (data.logged_in) {
+          if (data.auth_disabled) {
+            authDisabled = true;
+            hasPdfAccess = true;
+            hasUnrestrictedAccess = true;
+            discordUser = null;
+          } else if (data.logged_in) {
             discordUser = { username: data.username, has_pdf_access: data.has_pdf_access };
             hasPdfAccess = data.has_pdf_access;
             hasUnrestrictedAccess = data.has_unrestricted_access ?? false;
@@ -446,12 +452,14 @@
                 ? 'step-badge-active border-primary/30'
                 : 'bg-base-200 text-base-content/50 border-base-300 opacity-50'}">4</span
             >
-            <div class="flex min-h-6 items-center gap-2.5 transition-opacity duration-200
-              {!pdfAllowed ? 'opacity-50' : ''}">
+            <div
+              class="flex min-h-6 items-center gap-2.5 transition-opacity duration-200
+              {!pdfAllowed ? 'opacity-50' : ''}"
+            >
               <h3 class="m-0 text-xs font-bold tracking-[0.14em] uppercase">
                 {t("format_label")}
               </h3>
-              {#if !pdfAllowed}
+              {#if !pdfAllowed && !authDisabled}
                 <span class="badge badge-outline badge-xs font-semibold tracking-wider uppercase">
                   {#if !hasPdfAccess && !discordUser}
                     {t("format_pdf_locked")}
@@ -496,63 +504,66 @@
                   </button>
                 {/each}
               </div>
-              {#if !hasPdfAccess}
-                <div class="mt-2">
-                  {#if !discordUser}
-                    <a
-                      href="/auth/discord/login"
-                      class="btn btn-sm discord-btn bg-indigo-500 text-white hover:bg-indigo-600"
-                      data-umami-event="Discord Login"
-                    >
-                      <DiscordIcon width={16} height={13} />
-                      {t("discord_sign_in")}
-                    </a>
-                  {:else}
-                    <div class="flex items-center gap-2 text-sm">
-                      <span class="text-base-content/60">
-                        {t("discord_signed_in_as")}
-                        {discordUser.username}
-                      </span>
+              {#if !authDisabled}
+                {#if !hasPdfAccess}
+                  <div class="mt-2">
+                    {#if !discordUser}
                       <a
-                        href="https://discord.gg/P9RHC4KCwd"
-                        target="_blank"
-                        class="link text-sm font-semibold">{t("discord_join_server")}</a
+                        href="/auth/discord/login"
+                        class="btn btn-sm discord-btn bg-indigo-500 text-white hover:bg-indigo-600"
+                        data-umami-event="Discord Login"
                       >
-                      <button
-                        type="button"
-                        class="link text-sm"
-                        onclick={() => {
-                          fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).then(
-                            () => {
+                        <DiscordIcon width={16} height={13} />
+                        {t("discord_sign_in")}
+                      </a>
+                    {:else}
+                      <div class="flex items-center gap-2 text-sm">
+                        <span class="text-base-content/60">
+                          {t("discord_signed_in_as")}
+                          {discordUser.username}
+                        </span>
+                        <a
+                          href="https://discord.gg/P9RHC4KCwd"
+                          target="_blank"
+                          class="link text-sm font-semibold">{t("discord_join_server")}</a
+                        >
+                        <button
+                          type="button"
+                          class="link text-sm"
+                          onclick={() => {
+                            fetch("/auth/logout", {
+                              method: "POST",
+                              credentials: "same-origin"
+                            }).then(() => {
                               discordUser = null;
                               hasPdfAccess = false;
                               hasUnrestrictedAccess = false;
-                            }
-                          );
-                        }}>{t("discord_logout")}</button
-                      >
-                    </div>
-                  {/if}
-                </div>
-              {/if}
-              {#if discordUser && hasPdfAccess}
-                <div class="text-base-content/50 mt-1 flex items-center gap-2 text-xs">
-                  <DiscordIcon width={12} height={10} />
-                  <span>{discordUser.username}</span>
-                  <button
-                    type="button"
-                    class="link text-xs"
-                    onclick={() => {
-                      fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).then(
-                        () => {
-                          discordUser = null;
-                          hasPdfAccess = false;
-                          hasUnrestrictedAccess = false;
-                        }
-                      );
-                    }}>{t("discord_logout")}</button
-                  >
-                </div>
+                            });
+                          }}>{t("discord_logout")}</button
+                        >
+                      </div>
+                    {/if}
+                  </div>
+                {/if}
+                {#if discordUser && hasPdfAccess}
+                  <div class="text-base-content/50 mt-1 flex items-center gap-2 text-xs">
+                    <DiscordIcon width={12} height={10} />
+                    <span>{discordUser.username}</span>
+                    <button
+                      type="button"
+                      class="link text-xs"
+                      onclick={() => {
+                        fetch("/auth/logout", { method: "POST", credentials: "same-origin" }).then(
+                          () => {
+                            discordUser = null;
+                            hasPdfAccess = false;
+                            hasUnrestrictedAccess = false;
+                          }
+                        );
+                      }}>{t("discord_logout")}</button
+                    >
+                  </div>
+                {/if}
               {/if}
             </div>
           </div>

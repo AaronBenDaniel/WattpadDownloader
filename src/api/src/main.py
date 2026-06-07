@@ -39,6 +39,7 @@ from create_book import (
 )
 from create_book.parser import clean_tree, fetch_tree_images
 from auth import (
+    auth_config,
     auth_router,
     fetch_guild_member,
     require_pdf_access,
@@ -367,13 +368,16 @@ async def handle_download(
         file_size = output_buffer.getbuffer().nbytes
 
         max_download_minutes = 10
-        user = get_current_user(request)
-        if user:
-            member = await fetch_guild_member(user["id"])
-            if member:
-                max_download_minutes = 5
-                if has_unrestricted_access(member):
-                    max_download_minutes = 0
+        if not auth_config.DISCORD_AUTH_ENABLED:
+            max_download_minutes = 0
+        else:
+            user = get_current_user(request)
+            if user:
+                member = await fetch_guild_member(user["id"])
+                if member:
+                    max_download_minutes = 5
+                    if has_unrestricted_access(member):
+                        max_download_minutes = 0
 
         return StreamingResponse(
             iterfile(file_size, max_download_minutes),

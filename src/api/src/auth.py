@@ -19,6 +19,7 @@ MEMBERSHIP_CACHE_TTL = 1800
 
 
 class AuthConfig(BaseSettings):
+    DISCORD_AUTH_ENABLED: bool = True
     DISCORD_CLIENT_ID: str = ""
     DISCORD_CLIENT_SECRET: str = ""
     DISCORD_BOT_TOKEN: str = ""
@@ -106,6 +107,8 @@ def has_unrestricted_access(member: dict) -> bool:
 
 
 async def require_pdf_access(request: Request, is_bulk: bool):
+    if not auth_config.DISCORD_AUTH_ENABLED:
+        return
     user = get_current_user(request)
     if not user:
         raise HTTPException(403, "Login required for PDF downloads")
@@ -186,6 +189,14 @@ async def discord_callback(request: Request, code: str, state: str):
 
 @auth_router.get("/me")
 async def auth_me(request: Request):
+    if not auth_config.DISCORD_AUTH_ENABLED:
+        return {
+            "logged_in": False,
+            "auth_disabled": True,
+            "has_pdf_access": True,
+            "has_unrestricted_access": True,
+        }
+
     user = get_current_user(request)
     if not user:
         return {"logged_in": False}
