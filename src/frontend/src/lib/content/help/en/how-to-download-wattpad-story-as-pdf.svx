@@ -1,0 +1,60 @@
+---
+title: "How to Download a Wattpad Story as PDF"
+description: "A step-by-step guide to downloading Wattpad stories as PDF files using Wattpad Downloader. Free, fast, and works on any device."
+slug: "how-to-download-wattpad-story-as-pdf"
+datePublished: "2026-06-10"
+dateModified: "2026-06-10"
+related:
+  - label: "Wattpad to PDF"
+    href: "/wattpad-to-pdf/"
+  - label: "How to Read Offline"
+    href: "/help/how-to-read-wattpad-offline/"
+  - label: "How to Send to Kindle"
+    href: "/help/how-to-send-wattpad-stories-to-kindle/"
+---
+
+WP Downloader lets you save any public WP story as a formatted PDF file in seconds. Here's how.
+
+## What you need
+
+- A WP story URL
+- A free Discord account (required for PDF generation)
+
+## Steps
+
+### 1. Copy the story URL
+
+Open the story on the Wattpad website or app. Copy the URL from your browser's address bar. It will look like:
+
+```
+https://www.wattpad.com/story/123456789-story-title
+```
+
+### 2. Go to WP Downloader
+
+Visit [wpd.my](/) and paste the story URL into the input field.
+
+### 3. Select PDF as your format
+
+Click the **PDF** button in the Format section. If you see "Requires sign-in", you'll need to connect your Discord account first (step 4).
+
+### 4. Sign in with Discord
+
+Click **Sign in with Discord** and authorise WP Downloader. You only need to do this once. Your account details are never stored beyond your session.
+
+### 5. Click Download
+
+Hit the **Download** button. Your PDF will be generated and downloaded to your device within seconds.
+
+## Tips
+
+- **Include images**: Enable the Include Images toggle to embed cover and chapter images in your PDF. This takes slightly longer.
+- **Slow internet?** Leave the download running - it continues in the background.
+
+## Troubleshooting
+
+**The download button is greyed out** - make sure you've pasted a valid WP story URL and signed in with Discord.
+
+**The PDF is missing chapters** - some stories have chapters locked behind login. You can use the Paid Story option if you've purchased access.
+
+**The file won't open** - try a different PDF reader. All modern internet browsers open WP Downloader PDFs correctly.

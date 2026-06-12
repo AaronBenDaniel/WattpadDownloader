@@ -1,5 +1,6 @@
 <script>
   import { t } from "$lib/i18n/index.svelte.js";
+  import Seo from "$lib/components/Seo.svelte";
   import LanguageSelector from "$lib/components/LanguageSelector.svelte";
   import { browser } from "$app/environment";
 
@@ -171,6 +172,23 @@
   };
 </script>
 
+<Seo
+  title="Wattpad Downloader - Save Stories as PDF or EPUB | WP Downloader"
+  description="Download Wattpad Books as PDF or EPUB in seconds. Read offline on any device. Free, fast, and supports images. Try WP Downloader now."
+  path="/"
+  jsonLd={{
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Wattpad Downloader",
+    url: "https://wpd.my/",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Web",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    description:
+      "Download Wattpad Books as PDF or EPUB in seconds. Read offline on any device. Free, fast, and supports images."
+  }}
+/>
+
 <div>
   <div class="hero min-h-screen">
     <div
@@ -181,7 +199,7 @@
           <h1
             class="bg-gradient-to-r from-red-700 via-yellow-600 to-pink-600 bg-clip-text text-5xl font-extrabold text-transparent"
           >
-            {t("title")}
+            {t("hero_h1")}
           </h1>
           <div
             role="alert"
@@ -210,6 +228,7 @@
           </div>
         </div>
 
+        <h2 class="sr-only">WP Story Downloader</h2>
         <form
           class="bg-base-100 border-base-300 rounded-2xl border px-5 pt-4 pb-4 shadow-xl"
           id="wpd-download-form"
@@ -636,6 +655,18 @@
     </div>
   </div>
 </div>
+
+<section class="bg-base-200/60 pt-8 pb-16">
+  <div class="mx-auto max-w-3xl px-4 text-center">
+    <h2 class="mb-4 text-lg font-bold">Guides & Tools</h2>
+    <nav class="flex flex-wrap justify-center gap-3 text-sm">
+      <a href="/wattpad-to-pdf/" class="btn btn-outline btn-sm">WP to PDF</a>
+      <a href="/wattpad-to-epub/" class="btn btn-outline btn-sm">WP to EPUB</a>
+      <a href="/send-to-kindle/" class="btn btn-outline btn-sm">Send to Kindle</a>
+      <a href="/help/" class="btn btn-outline btn-sm">Help & Guides</a>
+    </nav>
+  </div>
+</section>
 
 <dialog class="modal" bind:this={storyURLTutorialModal}>
   <div class="modal-box">

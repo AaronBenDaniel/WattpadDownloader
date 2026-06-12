@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "ดาวน์โหลดนิยาย WP",
   "discord_cta": "เข้าร่วม Discord ของเราสำหรับ",
   "discord_cta_highlight": "อัปเดต การสนับสนุน และฟีเจอร์ล่วงหน้า!",
   "discord_join_now": "เข้าร่วมเลย",
@@ -14,7 +15,7 @@
   "password": "รหัสผ่าน",
   "download": "ดาวน์โหลด",
   "include_images_bold": "รวมรูปภาพ",
-  "include_images": " — ดาวน์โหลดช้าลง",
+  "include_images": " - ดาวน์โหลดช้าลง",
   "download_started": "การดาวน์โหลดได้",
   "download_started_highlight": "เริ่มต้นแล้ว",
   "discord_before": "เข้าร่วม ",

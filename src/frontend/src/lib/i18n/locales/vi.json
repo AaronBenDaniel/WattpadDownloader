@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "Tải truyện WP",
   "discord_cta": "Tham gia Discord của chúng tôi để nhận ",
   "discord_cta_highlight": "cập nhật, hỗ trợ và tính năng sớm!",
   "discord_join_now": "Tham gia ngay",
@@ -14,7 +15,7 @@
   "password": "Mật khẩu",
   "download": "Tải xuống",
   "include_images_bold": "Bao gồm ảnh",
-  "include_images": " — Tải chậm hơn",
+  "include_images": " - Tải chậm hơn",
   "download_started": "Tải xuống đã",
   "download_started_highlight": "Bắt đầu",
   "discord_before": "Tham gia ",

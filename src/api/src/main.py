@@ -389,12 +389,6 @@ async def handle_download(
         )
 
 
-@app.get("/donate")
-def donate():
-    """Redirect to donation URL."""
-    return RedirectResponse("https://buymeacoffee.com/theonlywayup")
-
-
 class CachedStaticFiles(StaticFiles):
     async def get_response(self, path, scope):
         response = await super().get_response(path, scope)
@@ -405,7 +399,7 @@ class CachedStaticFiles(StaticFiles):
         return response
 
 
-app.mount("/", CachedStaticFiles(directory=BUILD_PATH), "static")
+app.mount("/", CachedStaticFiles(directory=BUILD_PATH, html=True), "static")
 
 
 if __name__ == "__main__":

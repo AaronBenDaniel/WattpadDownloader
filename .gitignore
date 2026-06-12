@@ -1,8 +1,8 @@
 __pycache__
 venv
-*epub
+*.epub
 *.pdf
-# *html
+# *.html
 data
 *ipynb
 build

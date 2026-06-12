@@ -2,6 +2,10 @@
   import { t } from "$lib/i18n/index.svelte.js";
 </script>
 
+<svelte:head>
+  <title>Error | Wattpad Downloader</title>
+</svelte:head>
+
 <div class="flex">
   <div class="hero min-h-screen">
     <div class="hero-content text-center">

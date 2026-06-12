@@ -1,5 +1,6 @@
 {
   "title": "WP İndirici",
+  "hero_h1": "WP Hikayelerini İndir",
   "discord_cta": "Discord'umuza katılın: ",
   "discord_cta_highlight": "güncellemeler, destek ve erken özellikler!",
   "discord_join_now": "Şimdi katıl",
@@ -14,7 +15,7 @@
   "password": "Şifre",
   "download": "İndir",
   "include_images_bold": "Görselleri Dahil Et",
-  "include_images": " — Daha Yavaş İndirme",
+  "include_images": " - Daha Yavaş İndirme",
   "download_started": "İndirmeniz",
   "download_started_highlight": "Başladı",
   "discord_before": "Bize ",

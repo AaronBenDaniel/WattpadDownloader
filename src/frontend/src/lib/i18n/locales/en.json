@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "Download WP Stories",
   "discord_cta": "Join our Discord for ",
   "discord_cta_highlight": "updates, support, and early features!",
   "discord_join_now": "Join now",
@@ -14,7 +15,7 @@
   "password": "Password",
   "download": "Download",
   "include_images_bold": "Include Images",
-  "include_images": " — Slower Download",
+  "include_images": " - Slower Download",
   "download_started": "Your download has",
   "download_started_highlight": "Started",
   "discord_before": "Join us on ",

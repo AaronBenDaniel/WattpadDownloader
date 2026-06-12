@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "WP ဇာတ်လမ်းများ ဒေါင်းလုဒ်လုပ်ပါ",
   "discord_cta": "Discord တွင် ပူးပေါင်းပါ ",
   "discord_cta_highlight": "သတင်းများ၊ အကူအညီနှင့် feature အသစ်များအတွက်!",
   "discord_join_now": "ယခုပူးပေါင်းပါ",
@@ -14,7 +15,7 @@
   "password": "စကားဝှက်",
   "download": "ဒေါင်းလုဒ်",
   "include_images_bold": "ပုံများပါဝင်ရန်",
-  "include_images": " — ဒေါင်းလုဒ်နှေးခြင်း",
+  "include_images": " - ဒေါင်းလုဒ်နှေးခြင်း",
   "download_started": "သင့်ဒေါင်းလုဒ်",
   "download_started_highlight": "စတင်ပြီ",
   "discord_before": "ကျွန်ုပ်တို့နှင့် ",

@@ -1,5 +1,6 @@
 <script>
   import "../app.css";
+  import { page } from "$app/state";
   import { init, i18n, t } from "$lib/i18n/index.svelte.js";
   import ThemeToggle from "$lib/components/ThemeToggle.svelte";
   /**
@@ -26,6 +27,16 @@
     }
   </style>
 </svelte:head>
+
+{#if page.url.pathname !== "/"}
+  <a
+    href="/"
+    class="bg-base-100/80 fixed top-4 left-4 z-50 rounded-full px-4 py-2 shadow-sm backdrop-blur-sm"
+    data-umami-event="Logo Home"
+  >
+    <img src="/favicon.svg" alt="WP Downloader" class="h-6 w-auto" />
+  </a>
+{/if}
 
 <div class="fixed top-4 right-4 z-50">
   <ThemeToggle />

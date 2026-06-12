@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "Muat Turun Cerita WP",
   "discord_cta": "Sertai Discord kami untuk ",
   "discord_cta_highlight": "kemas kini, sokongan, dan ciri-ciri awal!",
   "discord_join_now": "Sertai sekarang",
@@ -14,7 +15,7 @@
   "password": "Password",
   "download": "Muat turun",
   "include_images_bold": "Termasuk imej",
-  "include_images": " — akan muat turn yang lebih perlahan",
+  "include_images": " - akan muat turn yang lebih perlahan",
   "download_started": "Muat turun anda telah",
   "download_started_highlight": "bermula",
   "discord_before": "Sertai kami di ",

@@ -1,5 +1,6 @@
 {
   "title": "WP Downloader",
+  "hero_h1": "WP කතා බාගන්න",
   "discord_cta": "Discord එකට එකතු වන්න ",
   "discord_cta_highlight": "යාවත්කාලීන, සහාය සහ මුල් විශේෂාංග සඳහා!",
   "discord_join_now": "දැන් එකතු වන්න",
@@ -14,7 +15,7 @@
   "password": "මුරපදය",
   "download": "බාගන්න",
   "include_images_bold": "පින්තූර ඇතුළත් කරන්න",
-  "include_images": " — මන්දගාමී බාගැනීම",
+  "include_images": " - මන්දගාමී බාගැනීම",
   "download_started": "ඔබේ බාගැනීම",
   "download_started_highlight": "ආරම්භ විය",
   "discord_before": "අපගේ ",
