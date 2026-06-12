@@ -144,7 +144,15 @@ def discord_login():
 
 
 @auth_router.get("/discord/callback")
-async def discord_callback(request: Request, code: str, state: str):
+async def discord_callback(
+    request: Request,
+    code: str | None = None,
+    state: str | None = None,
+    error: str | None = None,
+):
+    if error or not code or not state:
+        return RedirectResponse("/")
+
     if not _auth_enabled():
         raise HTTPException(503, "Discord auth not configured")
 
