@@ -21,7 +21,7 @@
     },
     {
       slug: "how-to-convert-wattpad-to-epub",
-      title: "How to Convert Wattpad Stories to EPUB",
+      title: "How to Download Wattpad Stories as EPUB",
       description: "Download WP Books as EPUB files in seconds. No account needed."
     },
     {

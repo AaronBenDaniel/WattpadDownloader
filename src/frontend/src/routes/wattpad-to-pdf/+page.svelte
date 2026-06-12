@@ -2,14 +2,14 @@
   import LandingPage from "$lib/components/LandingPage.svelte";
 
   const seo = {
-    title: "Wattpad to PDF Converter - Free | WP Downloader",
+    title: "Wattpad to PDF Downloader - Free | WP Downloader",
     description:
-      "Convert Wattpad Books to PDF in seconds. Download stories for offline reading on any device. Free, supports images, no account required for EPUB.",
+      "Download Wattpad Books as PDF in seconds. Download stories for offline reading on any device. Free, supports images, no account required for EPUB.",
     path: "/wattpad-to-pdf/",
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "HowTo",
-      name: "How to convert a Wattpad story to PDF",
+      name: "How to download a Wattpad story as PDF",
       description: "Download a WP story as a PDF file using WP Downloader.",
       step: [
         {
@@ -43,7 +43,7 @@
 
 <LandingPage
   {seo}
-  h1="Convert WP Stories to PDF"
+  h1="Download WP Stories as PDF"
   intro="Save your favourite WP Books as PDF files for offline reading. Formatted beautifully with chapter headings, images, and full text, ready to read on any device."
   steps={[
     {
@@ -67,7 +67,7 @@
     {
       title: "Formatted for reading",
       description:
-        "Stories are converted with clean chapter headings, proper typography, and consistent spacing."
+        "Stories are formatted with clean chapter headings, proper typography, and consistent spacing."
     },
     {
       title: "Images included (optional)",

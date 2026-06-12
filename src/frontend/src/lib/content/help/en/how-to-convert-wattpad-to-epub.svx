@@ -1,6 +1,6 @@
 ---
-title: "How to Convert Wattpad Stories to EPUB"
-description: "Download Wattad Books as EPUB files in seconds using Wattpad Downloader. No account needed. Works with any story URL."
+title: "How to Download Wattpad Stories as EPUB"
+description: "Download Wattpad Books as EPUB files in seconds using Wattpad Downloader. No account needed. Works with any story URL."
 slug: "how-to-convert-wattpad-to-epub"
 datePublished: "2026-06-10"
 dateModified: "2026-06-10"

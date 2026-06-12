@@ -2,14 +2,14 @@
   import LandingPage from "$lib/components/LandingPage.svelte";
 
   const seo = {
-    title: "Wattpad to EPUB Converter - Free | WP Downloader",
+    title: "Wattpad to EPUB Downloader - Free | WP Downloader",
     description:
-      "Convert Wattpad Books to EPUB in seconds. Read offline on Kindle, Kobo, Apple Books, or any e-reader. Free, no account required.",
+      "Download Wattpad Books as EPUB in seconds. Read offline on Kindle, Kobo, Apple Books, or any e-reader. Free, no account required.",
     path: "/wattpad-to-epub/",
     jsonLd: {
       "@context": "https://schema.org",
       "@type": "HowTo",
-      name: "How to convert a Wattpad story to EPUB",
+      name: "How to download a Wattpad story as EPUB",
       description: "Download a WP story as an EPUB file using WP Downloader.",
       step: [
         {
@@ -43,7 +43,7 @@
 
 <LandingPage
   {seo}
-  h1="Convert WP Stories to EPUB"
+  h1="Download WP Stories as EPUB"
   intro="Download WP Books as EPUB files - the standard format for e-readers. Open them on Kindle, Kobo, Apple Books, or any reading app. No account required."
   steps={[
     {
