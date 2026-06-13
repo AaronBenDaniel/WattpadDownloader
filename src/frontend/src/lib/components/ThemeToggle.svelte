@@ -26,6 +26,9 @@
     localStorage.setItem(STORAGE_KEY, theme);
     if (!initialized) {
       document.documentElement.setAttribute("data-theme", theme);
+      const cs = isDark ? "dark" : "light";
+      document.documentElement.style.colorScheme = cs;
+      document.querySelector('meta[name="color-scheme"]').content = cs;
       initialized = true;
       return;
     }
@@ -33,6 +36,9 @@
     el.classList.add("theme-transitioning");
     void el.offsetHeight;
     el.setAttribute("data-theme", theme);
+    const cs = isDark ? "dark" : "light";
+    el.style.colorScheme = cs;
+    document.querySelector('meta[name="color-scheme"]').content = cs;
     setTimeout(() => el.classList.remove("theme-transitioning"), 350);
   }
 

@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
     <script
       defer
       src="https://stats.towu.dev/script.js"
@@ -22,6 +23,9 @@
         if (!t)
           t = window.matchMedia("(prefers-color-scheme: dark)").matches ? "abyss" : "bumblebee";
         document.documentElement.setAttribute("data-theme", t);
+        var cs = t === "abyss" ? "dark" : "light";
+        document.documentElement.style.colorScheme = cs;
+        document.querySelector('meta[name="color-scheme"]').content = cs;
       })();
     </script>
     %sveltekit.head%
