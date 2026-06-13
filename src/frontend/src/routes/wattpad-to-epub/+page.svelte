@@ -108,7 +108,6 @@
   related={[
     { label: "WP to PDF", href: "/wattpad-to-pdf/" },
     { label: "Send to Kindle", href: "/send-to-kindle/" },
-    { label: "Best EPUB Readers", href: "/help/best-epub-readers-for-wattpad-books/" },
-    { label: "Back to tool", href: "/" }
+    { label: "Best EPUB Readers", href: "/help/best-epub-readers-for-wattpad-books/" }
   ]}
 />

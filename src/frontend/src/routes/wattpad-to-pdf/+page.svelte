@@ -104,7 +104,6 @@
   related={[
     { label: "WP to EPUB", href: "/wattpad-to-epub/" },
     { label: "Send to Kindle", href: "/send-to-kindle/" },
-    { label: "Help & Guides", href: "/help/" },
-    { label: "Back to tool", href: "/" }
+    { label: "Help & Guides", href: "/help/" }
   ]}
 />

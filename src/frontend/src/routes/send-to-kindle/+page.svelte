@@ -117,7 +117,6 @@
     {
       label: "How to Send to Kindle (guide)",
       href: "/help/how-to-send-wattpad-stories-to-kindle/"
-    },
-    { label: "Back to tool", href: "/" }
+    }
   ]}
 />
